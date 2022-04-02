@@ -5,9 +5,11 @@ import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -32,6 +34,8 @@ public class HomeFragment extends Fragment {
     private CircleIndicator3 circleIndicator3;
     private RecyclerView recyclerViewCategory;
     private RecyclerView recyclerViewProduct;
+    private NestedScrollView nestedScrollView;
+    private ProgressBar progressBar;
 
     // Adapter
     private BannerAdapter bannerAdapter;
@@ -71,6 +75,8 @@ public class HomeFragment extends Fragment {
         circleIndicator3 = view.findViewById(R.id.circle_indicator_3_banner);
         recyclerViewCategory = view.findViewById(R.id.recycler_view_categories);
         recyclerViewProduct = view.findViewById(R.id.recycler_view_products);
+        nestedScrollView = view.findViewById(R.id.nested_scroll_view_new_products);
+        progressBar = view.findViewById(R.id.progress_bar_new_product);
 
         // Tí lấy data từ repository call từ api
         mListBanner = initializeTestDataBanners();
@@ -107,6 +113,17 @@ public class HomeFragment extends Fragment {
         productAdapter = new ProductAdapter(mListProducts);
         recyclerViewProduct.setAdapter(productAdapter);
         recyclerViewProduct.setLayoutManager(new GridLayoutManager(getActivity(),2));
+
+        // Tí nữa khi call api thì sửa lại thành tăng số page lên và gọi tiếp api
+        nestedScrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
+            @Override
+            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                if (scrollY == v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight()) {
+                    progressBar.setVisibility(View.GONE);
+                }
+            }
+        });
+
 
     }
 
