@@ -9,6 +9,7 @@ import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface APIServiceInterface {
@@ -22,5 +23,8 @@ public interface APIServiceInterface {
     Call<ProductPagination> getListProducts(@Query("page") int page);
 
     @GET("products/search")
-    Call<List<ProductPagination>> searchListProducts(@Query("keyword") String keyword);
+    Call<ProductPagination> searchListProducts(@Query("keyword") String keyword,@Query("page") int page);
+
+    @GET("products/{productId}")
+    Call<Product> getProductDetail(@Path("productId") int productId);
 }

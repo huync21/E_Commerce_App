@@ -3,9 +3,10 @@ package com.hfad.e_commerce_app.models;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class ProductPagination {
+public class ProductPagination implements Serializable {
     @SerializedName("count")
     @Expose
     private int count;

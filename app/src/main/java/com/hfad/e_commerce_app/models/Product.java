@@ -3,7 +3,9 @@ package com.hfad.e_commerce_app.models;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Product {
+import java.io.Serializable;
+
+public class Product implements Serializable {
     @SerializedName("id")
     @Expose
     private int id;

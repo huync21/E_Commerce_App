@@ -1,5 +1,6 @@
 package com.hfad.e_commerce_app.views;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
@@ -26,6 +27,7 @@ import com.hfad.e_commerce_app.models.ProductPagination;
 import com.hfad.e_commerce_app.retrofit.APIServiceInterface;
 import com.hfad.e_commerce_app.utils.APIUtils;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -94,8 +96,6 @@ public class HomeFragment extends Fragment {
         progressBarProducts = view.findViewById(R.id.progress_bar_new_product);
 
 
-        // Tí lấy data từ repository call từ api
-        callApiBanner();
         // Gắn adapter vào viewpager, gắn viewpager vào circle indicator
         bannerAdapter = new BannerAdapter(mListBanner,getActivity());
         viewPager2.setAdapter(bannerAdapter);
@@ -117,14 +117,11 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        // Gắn adapter vào recycler view phần Category:
-        callApiCategory();
         categoryAdapter = new CategoryAdapter(mListCategories, getActivity());
         recyclerViewCategory.setAdapter(categoryAdapter);
         recyclerViewCategory.setLayoutManager(new GridLayoutManager(getActivity(), 1, GridLayoutManager.HORIZONTAL, false));
 
-        // Gắn adapter vào recycler view phần Product:
-        callApiProducts(page);
+
         productAdapter = new ProductAdapter(mListProducts, getActivity());
         recyclerViewProduct.setAdapter(productAdapter);
         recyclerViewProduct.setLayoutManager(new GridLayoutManager(getActivity(),2));
@@ -135,16 +132,51 @@ public class HomeFragment extends Fragment {
             public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
                 if (scrollY == v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight()) {
                     page++;
-//                    if(page>totalPage) {
-//                        progressBarProducts.setVisibility(View.GONE);
-//                    }else{
+                    if(page>totalPage) {
+                        progressBarProducts.setVisibility(View.GONE);
+                    }else{
                         progressBarProducts.setVisibility(View.VISIBLE);
                         callApiProducts(page);
-//                    }
+                    }
                 }
             }
         });
 
+        if(savedInstanceState==null) {
+            callApiBanner();
+            callApiCategory();
+            callApiProducts(page);
+        } else{
+            mListBanner = (List<Banner>) savedInstanceState.getSerializable("listBanners");
+            mListCategories = (List<Category>) savedInstanceState.getSerializable("listCategories");
+            mListProducts = (List<Product>) savedInstanceState.getSerializable("listProducts");
+            page = savedInstanceState.getInt("page");
+            totalPage = savedInstanceState.getInt("totalPage");
+            bannerAdapter.setmListBanner(mListBanner);
+            categoryAdapter.setmListCategory(mListCategories);
+            productAdapter.setmListProduct(mListProducts);
+        }
+
+        // Xử lý sự kiện khi click vào 1 item product
+        productAdapter.setItemClickListener(new ProductAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(int productId) {
+                Intent intent = new Intent(getActivity(),DetailProductActivity.class);
+                intent.putExtra("productId",productId);
+                startActivity(intent);
+            }
+        });
+
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putSerializable("listBanners", (Serializable) mListBanner);
+        outState.putSerializable("listCategories",(Serializable) mListCategories);
+        outState.putSerializable("listProducts",(Serializable) mListProducts);
+        outState.putInt("page",page);
+        outState.putInt("totalPage",totalPage);
 
     }
 
@@ -219,4 +251,6 @@ public class HomeFragment extends Fragment {
         super.onResume();
         mHandler.postDelayed(mRunnable,3);
     }
+
+
 }

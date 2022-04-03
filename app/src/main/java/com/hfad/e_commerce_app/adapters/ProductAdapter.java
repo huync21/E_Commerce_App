@@ -43,6 +43,12 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
             holder.textViewName.setText(product.getName());
             holder.textViewPrice.setText("$"+product.getPrice());
         }
+        holder.imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                itemClickListener.onItemClick(product.getId());
+            }
+        });
     }
 
     @Override
@@ -66,5 +72,14 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
     public void setmListProduct(List<Product> mListProduct){
         this.mListProduct = mListProduct;
         notifyDataSetChanged();
+    }
+
+    public interface OnItemClickListener{
+        void onItemClick(int productId);
+    }
+    private OnItemClickListener itemClickListener;
+
+    public void setItemClickListener(OnItemClickListener itemClickListener) {
+        this.itemClickListener = itemClickListener;
     }
 }
