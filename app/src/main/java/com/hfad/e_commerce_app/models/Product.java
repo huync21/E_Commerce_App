@@ -1,24 +1,54 @@
 package com.hfad.e_commerce_app.models;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 public class Product {
+    @SerializedName("id")
+    @Expose
+    private int id;
+    @SerializedName("product_name")
+    @Expose
     private String name;
-    private String image;
-    private int price;
+    @SerializedName("slug")
+    @Expose
+    private String slug;
+    @SerializedName("description")
+    @Expose
     private String description;
-    private int imageTest;
+    @SerializedName("price")
+    @Expose
+    private int price;
+    @SerializedName("images")
+    @Expose
+    private String image;
+    @SerializedName("stock")
+    @Expose
+    private int stock;
+    @SerializedName("category")
+    @Expose
+    private Category category;
 
-    public Product(String name, int price, int imageTest) {
+    public Product() {
+    }
+
+    public Product(int id, String name, String slug, String description, int price, String image, int stock, Category category) {
+        this.id = id;
         this.name = name;
+        this.slug = slug;
+        this.description = description;
         this.price = price;
-        this.imageTest = imageTest;
+        this.image = image;
+        this.stock = stock;
+        this.category = category;
     }
 
-    public int getImageTest() {
-        return imageTest;
+    public int getId() {
+        return id;
     }
 
-    public void setImageTest(int imageTest) {
-        this.imageTest = imageTest;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -29,20 +59,12 @@ public class Product {
         this.name = name;
     }
 
-    public String getImage() {
-        return image;
+    public String getSlug() {
+        return slug;
     }
 
-    public void setImage(String image) {
-        this.image = image;
-    }
-
-    public int getPrice() {
-        return price;
-    }
-
-    public void setPrice(int price) {
-        this.price = price;
+    public void setSlug(String slug) {
+        this.slug = slug;
     }
 
     public String getDescription() {
@@ -53,13 +75,35 @@ public class Product {
         this.description = description;
     }
 
-    public Product() {
+    public int getPrice() {
+        return price;
     }
 
-    public Product(String name, String image, int price, String description) {
-        this.name = name;
-        this.image = image;
+    public void setPrice(int price) {
         this.price = price;
-        this.description = description;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public int getStock() {
+        return stock;
+    }
+
+    public void setStock(int stock) {
+        this.stock = stock;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
     }
 }

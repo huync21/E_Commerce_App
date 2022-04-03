@@ -1,5 +1,6 @@
 package com.hfad.e_commerce_app.adapters;
 
+import android.app.Activity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +9,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.hfad.e_commerce_app.R;
 import com.hfad.e_commerce_app.models.Category;
 
@@ -17,9 +19,11 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder>{
     private List<Category> mListCategory;
+    private Activity activity;
 
-    public CategoryAdapter(List<Category> mListCategory) {
+    public CategoryAdapter(List<Category> mListCategory, Activity activity) {
         this.mListCategory = mListCategory;
+        this.activity = activity;
     }
 
     @NonNull
@@ -33,8 +37,8 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
     public void onBindViewHolder(@NonNull CategoryViewHolder holder, int position) {
         Category category = mListCategory.get(position);
         if(category!=null){
-            // Tí nữa phải sửa thành sử dụng Glide load ảnh từ URL
-            holder.circleImageView.setImageResource(category.getImageTest());
+            // Glide load ảnh để hiển thị ra
+            Glide.with(activity).load(category.getImage()).into(holder.circleImageView);
             holder.textView.setText(category.getName());
         }
     }
@@ -53,5 +57,10 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
             circleImageView = itemView.findViewById(R.id.circle_image_view_category_item);
             textView = itemView.findViewById(R.id.text_view_category_item);
         }
+    }
+
+    public void setmListCategory(List<Category> mListCategory){
+        this.mListCategory = mListCategory;
+        notifyDataSetChanged();
     }
 }

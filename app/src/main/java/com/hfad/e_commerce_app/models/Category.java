@@ -1,21 +1,43 @@
 package com.hfad.e_commerce_app.models;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 public class Category {
+    @SerializedName("id")
+    @Expose
+    private int id;
+    @SerializedName("category_name")
+    @Expose
     private String name;
+    @SerializedName("slug")
+    @Expose
+    private String slug;
+    @SerializedName("description")
+    @Expose
+    private String description;
+    @SerializedName("category_image")
+    @Expose
     private String image;
-    private int imageTest;
 
-    public Category(String name, int imageTest) {
+    public Category() {
+
+    }
+
+    public Category(int id, String name, String slug, String description, String image) {
+        this.id = id;
         this.name = name;
-        this.imageTest = imageTest;
+        this.slug = slug;
+        this.description = description;
+        this.image = image;
     }
 
-    public int getImageTest() {
-        return imageTest;
+    public int getId() {
+        return id;
     }
 
-    public void setImageTest(int imageTest) {
-        this.imageTest = imageTest;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -26,19 +48,27 @@ public class Category {
         this.name = name;
     }
 
+    public String getSlug() {
+        return slug;
+    }
+
+    public void setSlug(String slug) {
+        this.slug = slug;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public String getImage() {
         return image;
     }
 
     public void setImage(String image) {
         this.image = image;
-    }
-
-    public Category(String name, String image) {
-        this.name = name;
-        this.image = image;
-    }
-
-    public Category() {
     }
 }

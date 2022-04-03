@@ -1,26 +1,42 @@
 package com.hfad.e_commerce_app.models;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 public class Banner {
+    @SerializedName("id")
+    @Expose
+    private int id;
+    @SerializedName("banner_name")
+    @Expose
+    private String bannerName;
+    @SerializedName("image")
+    @Expose
     private String image;
-    private String name;
-    private int imageIdTest;
 
-    public int getImageIdTest() {
-        return imageIdTest;
+    public Banner() {
     }
 
-    public void setImageIdTest(int imageIdTest) {
-        this.imageIdTest = imageIdTest;
-    }
-
-    public Banner(String image, String name, int imageIdTest) {
+    public Banner(int id, String bannerName, String image) {
+        this.id = id;
+        this.bannerName = bannerName;
         this.image = image;
-        this.name = name;
-        this.imageIdTest = imageIdTest;
     }
 
-    public Banner(int imageIdTest) {
-        this.imageIdTest = imageIdTest;
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getBannerName() {
+        return bannerName;
+    }
+
+    public void setBannerName(String bannerName) {
+        this.bannerName = bannerName;
     }
 
     public String getImage() {
@@ -29,21 +45,5 @@ public class Banner {
 
     public void setImage(String image) {
         this.image = image;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Banner() {
-    }
-
-    public Banner(String image, String name) {
-        this.image = image;
-        this.name = name;
     }
 }

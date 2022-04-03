@@ -22,11 +22,17 @@ import com.hfad.e_commerce_app.adapters.ProductAdapter;
 import com.hfad.e_commerce_app.models.Banner;
 import com.hfad.e_commerce_app.models.Category;
 import com.hfad.e_commerce_app.models.Product;
+import com.hfad.e_commerce_app.models.ProductPagination;
+import com.hfad.e_commerce_app.retrofit.APIServiceInterface;
+import com.hfad.e_commerce_app.utils.APIUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import me.relex.circleindicator.CircleIndicator3;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class HomeFragment extends Fragment {
     // View components
@@ -35,7 +41,7 @@ public class HomeFragment extends Fragment {
     private RecyclerView recyclerViewCategory;
     private RecyclerView recyclerViewProduct;
     private NestedScrollView nestedScrollView;
-    private ProgressBar progressBar;
+    private ProgressBar progressBarBanner, progressBarCategories, progressBarProducts;
 
     // Adapter
     private BannerAdapter bannerAdapter;
@@ -45,20 +51,27 @@ public class HomeFragment extends Fragment {
     // List data
     private List<Banner> mListBanner;
     private List<Category> mListCategories;
-    private List<Product> mListProducts;
+    private List<Product> mListProducts = new ArrayList<>();
+
+    // Page để call api phân trang product
+    private int page = 1;
+    private int totalPage;
 
     // Khai báo handler và 1 luồng chạy để auto slide cái banner
     private Handler mHandler = new Handler();
     private Runnable mRunnable = new Runnable() {
         @Override
         public void run() {
-            // Nếu trượt đến phần tử cuối rồi thì quay lại cái đầu tiên
-            if(viewPager2.getCurrentItem() == mListBanner.size()-1){
-                viewPager2.setCurrentItem(0);
-            }else // Còn không thì cứ trượt đến trang tiếp theo
-            viewPager2.setCurrentItem(viewPager2.getCurrentItem()+1);
+            if(mListBanner !=null){
+                // Nếu trượt đến phần tử cuối rồi thì quay lại cái đầu tiên
+                if(viewPager2.getCurrentItem() == mListBanner.size()-1){
+                    viewPager2.setCurrentItem(0);
+                }else // Còn không thì cứ trượt đến trang tiếp theo
+                    viewPager2.setCurrentItem(viewPager2.getCurrentItem()+1);
+            }
         }
     };
+
 
     @Nullable
     @Override
@@ -76,13 +89,15 @@ public class HomeFragment extends Fragment {
         recyclerViewCategory = view.findViewById(R.id.recycler_view_categories);
         recyclerViewProduct = view.findViewById(R.id.recycler_view_products);
         nestedScrollView = view.findViewById(R.id.nested_scroll_view_new_products);
-        progressBar = view.findViewById(R.id.progress_bar_new_product);
+        progressBarBanner = view.findViewById(R.id.progress_bar_banner);
+        progressBarCategories = view.findViewById(R.id.progress_bar_categories);
+        progressBarProducts = view.findViewById(R.id.progress_bar_new_product);
+
 
         // Tí lấy data từ repository call từ api
-        mListBanner = initializeTestDataBanners();
-
+        callApiBanner();
         // Gắn adapter vào viewpager, gắn viewpager vào circle indicator
-        bannerAdapter = new BannerAdapter(mListBanner);
+        bannerAdapter = new BannerAdapter(mListBanner,getActivity());
         viewPager2.setAdapter(bannerAdapter);
         circleIndicator3.setViewPager(viewPager2);
 
@@ -103,14 +118,14 @@ public class HomeFragment extends Fragment {
         });
 
         // Gắn adapter vào recycler view phần Category:
-        mListCategories = initializeTestDataCategory();
-        categoryAdapter = new CategoryAdapter(mListCategories);
+        callApiCategory();
+        categoryAdapter = new CategoryAdapter(mListCategories, getActivity());
         recyclerViewCategory.setAdapter(categoryAdapter);
         recyclerViewCategory.setLayoutManager(new GridLayoutManager(getActivity(), 1, GridLayoutManager.HORIZONTAL, false));
 
         // Gắn adapter vào recycler view phần Product:
-        mListProducts = initializeTestDataProducts();
-        productAdapter = new ProductAdapter(mListProducts);
+        callApiProducts(page);
+        productAdapter = new ProductAdapter(mListProducts, getActivity());
         recyclerViewProduct.setAdapter(productAdapter);
         recyclerViewProduct.setLayoutManager(new GridLayoutManager(getActivity(),2));
 
@@ -119,7 +134,13 @@ public class HomeFragment extends Fragment {
             @Override
             public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
                 if (scrollY == v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight()) {
-                    progressBar.setVisibility(View.GONE);
+                    page++;
+//                    if(page>totalPage) {
+//                        progressBarProducts.setVisibility(View.GONE);
+//                    }else{
+                        progressBarProducts.setVisibility(View.VISIBLE);
+                        callApiProducts(page);
+//                    }
                 }
             }
         });
@@ -127,35 +148,64 @@ public class HomeFragment extends Fragment {
 
     }
 
-    private List<Banner> initializeTestDataBanners(){
-        List<Banner> bannerList = new ArrayList<>();
-        bannerList.add(new Banner(R.drawable.banner_e_commerce1));
-        bannerList.add(new Banner(R.drawable.banner));
-        bannerList.add(new Banner(R.drawable.shopping_trendy_banner));
-        return bannerList;
+    private void callApiCategory() {
+        APIUtils.getApiServiceInterface().getListCategories()
+                .enqueue(new Callback<List<Category>>() {
+                    @Override
+                    public void onResponse(Call<List<Category>> call, Response<List<Category>> response) {
+                        progressBarCategories.setVisibility(View.GONE);
+                        mListCategories = response.body();
+                        categoryAdapter.setmListCategory(mListCategories);
+                    }
+
+                    @Override
+                    public void onFailure(Call<List<Category>> call, Throwable t) {
+
+                    }
+                });
     }
 
-    private List<Category> initializeTestDataCategory(){
-        List<Category> categories = new ArrayList<>();
-        categories.add(new Category("Shoes",R.drawable.shoes));
-        categories.add(new Category("TVs",R.drawable.tv));
-        categories.add(new Category("Clothes",R.drawable.clothes));
-        categories.add(new Category("Books",R.drawable.books));
-        categories.add(new Category("Computers",R.drawable.computer_and_laptops));
-        categories.add(new Category("Phones",R.drawable.phones));
-        categories.add(new Category("Vehicles",R.drawable.vehicles));
-        return categories;
+    private void callApiBanner(){
+        APIServiceInterface apiServiceInterface = APIUtils.getApiServiceInterface();
+        Call<List<Banner>> call = apiServiceInterface.getListBanners();
+        call.enqueue(new Callback<List<Banner>>() {
+            @Override
+            public void onResponse(Call<List<Banner>> call, Response<List<Banner>> response) {
+                progressBarBanner.setVisibility(View.GONE);
+                mListBanner = response.body();
+                bannerAdapter.setmListBanner(mListBanner);
+                viewPager2.setAdapter(bannerAdapter);
+                circleIndicator3.setViewPager(viewPager2);
+            }
+
+            @Override
+            public void onFailure(Call<List<Banner>> call, Throwable t) {
+
+            }
+        });
     }
 
-    private List<Product> initializeTestDataProducts(){
-        List<Product> listProducts = new ArrayList<>();
-        listProducts.add(new Product("Nike Shoe",1000,R.drawable.nike));
-        listProducts.add(new Product("Cool Hoodie",1500,R.drawable.hoodie));
-        listProducts.add(new Product("Yellow Hoodie",1000,R.drawable.images));
-        listProducts.add(new Product("Nike Shoe",1000,R.drawable.nike));
-        listProducts.add(new Product("Cool Hoodie",1500,R.drawable.hoodie));
-        listProducts.add(new Product("Yellow Hoodie",1000,R.drawable.images));
-        return listProducts;
+
+    private void callApiProducts(int page){
+        APIUtils.getApiServiceInterface().getListProducts(page)
+                .enqueue(new Callback<ProductPagination>() {
+                    @Override
+                    public void onResponse(Call<ProductPagination> call, Response<ProductPagination> response) {
+                        if(response.isSuccessful() && response.body()!=null) {
+                            progressBarProducts.setVisibility(View.GONE);
+                            ProductPagination productPagination = response.body();
+                            totalPage = productPagination.getTotal_pages();
+                            mListProducts.addAll(productPagination.getResults());
+                            productAdapter.setmListProduct(mListProducts);
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<ProductPagination> call, Throwable t) {
+
+                    }
+                });
+
     }
 
     @Override

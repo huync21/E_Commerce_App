@@ -29,6 +29,14 @@
             app:layout_constraintLeft_toLeftOf="@id/view_pager_2_banner"
             app:layout_constraintRight_toRightOf="@id/view_pager_2_banner" />
 
+        <ProgressBar
+            android:id="@+id/progress_bar_banner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="@id/view_pager_2_banner"
+            app:layout_constraintLeft_toLeftOf="@id/view_pager_2_banner"
+            app:layout_constraintRight_toRightOf="@id/view_pager_2_banner"
+            app:layout_constraintBottom_toBottomOf="@id/view_pager_2_banner"/>
 
         <TextView
             android:id="@+id/textView_Category"
@@ -51,6 +59,14 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/textView_Category" />
 
+        <ProgressBar
+            android:id="@+id/progress_bar_categories"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="@id/recycler_view_categories"
+            app:layout_constraintLeft_toLeftOf="@id/recycler_view_categories"
+            app:layout_constraintRight_toRightOf="@id/recycler_view_categories"
+            app:layout_constraintBottom_toBottomOf="@id/recycler_view_categories"/>
 
         <TextView
             android:id="@+id/textView_new_products"
