@@ -12,6 +12,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.E_Commerce_App">
         <activity
+            android:name=".views.RegisterActivity"
+            android:exported="false" />
+        <activity
+            android:name=".views.LoginActivity"
+            android:exported="false" />
+        <activity
             android:name=".views.DetailProductActivity"
             android:exported="false" />
         <activity

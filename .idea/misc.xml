@@ -8,7 +8,9 @@
         <entry key="..\:/Users/LENOVO/AndroidStudioProjects/E_Commerce_App/app/src/main/res/drawable/button_buy_shape.xml" value="0.2415" />
         <entry key="..\:/Users/LENOVO/AndroidStudioProjects/E_Commerce_App/app/src/main/res/drawable/search_bar_shape.xml" value="0.1" />
         <entry key="..\:/Users/LENOVO/AndroidStudioProjects/E_Commerce_App/app/src/main/res/layout/activity_detail_product.xml" value="0.264" />
+        <entry key="..\:/Users/LENOVO/AndroidStudioProjects/E_Commerce_App/app/src/main/res/layout/activity_login.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/LENOVO/AndroidStudioProjects/E_Commerce_App/app/src/main/res/layout/activity_main.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/LENOVO/AndroidStudioProjects/E_Commerce_App/app/src/main/res/layout/activity_register.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/LENOVO/AndroidStudioProjects/E_Commerce_App/app/src/main/res/layout/fragment_home.xml" value="0.1" />
         <entry key="..\:/Users/LENOVO/AndroidStudioProjects/E_Commerce_App/app/src/main/res/layout/fragment_orders.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/LENOVO/AndroidStudioProjects/E_Commerce_App/app/src/main/res/layout/fragment_personal.xml" value="0.25416666666666665" />
@@ -19,6 +21,8 @@
         <entry key="..\:/Users/LENOVO/AndroidStudioProjects/E_Commerce_App/app/src/main/res/layout/item_home_banner.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/LENOVO/AndroidStudioProjects/E_Commerce_App/app/src/main/res/layout/item_new_product.xml" value="0.264" />
         <entry key="..\:/Users/LENOVO/AndroidStudioProjects/E_Commerce_App/app/src/main/res/layout/item_product.xml" value="0.1" />
+        <entry key="..\:/Users/LENOVO/AndroidStudioProjects/E_Commerce_App/app/src/main/res/layout/my_edit_text.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/LENOVO/AndroidStudioProjects/E_Commerce_App/app/src/main/res/layout/mybutton.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/LENOVO/AndroidStudioProjects/E_Commerce_App/app/src/main/res/menu/menu.xml" value="0.25416666666666665" />
       </map>
     </option>
