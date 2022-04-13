@@ -1,5 +1,6 @@
 package com.hfad.e_commerce_app.views;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -87,6 +88,16 @@ public class SearchFragment extends Fragment {
                         callAPIProducts(page,keyword);
                     }
                 }
+            }
+        });
+
+        // Xử lý click 1 item
+        productAdapter.setItemClickListener(new ProductAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(int productId) {
+                Intent intent = new Intent(getActivity(),DetailProductActivity.class);
+                intent.putExtra("productId",productId);
+                startActivity(intent);
             }
         });
     }

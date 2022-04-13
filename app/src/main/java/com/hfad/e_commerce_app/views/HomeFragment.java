@@ -3,6 +3,7 @@ package com.hfad.e_commerce_app.views;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -203,6 +204,7 @@ public class HomeFragment extends Fragment {
         call.enqueue(new Callback<List<Banner>>() {
             @Override
             public void onResponse(Call<List<Banner>> call, Response<List<Banner>> response) {
+                Log.d("RESPONSE", response.body().toString());
                 progressBarBanner.setVisibility(View.GONE);
                 mListBanner = response.body();
                 bannerAdapter.setmListBanner(mListBanner);

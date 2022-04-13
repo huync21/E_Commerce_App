@@ -19,11 +19,11 @@ import retrofit2.http.Query;
 
 public interface APIServiceInterface {
     @FormUrlEncoded
-    @POST("login/")
+    @POST("accounts/login")
     Call<JWTToken> login(@Field("email") String email,@Field("password") String password);
 
     @FormUrlEncoded
-    @POST("register/")
+    @POST("accounts/register")
     Call<User> register(@Field("email") String email, @Field("password") String password, @Field("username") String userName
     , @Field("first_name") String firstName, @Field("last_name") String lastName);
 

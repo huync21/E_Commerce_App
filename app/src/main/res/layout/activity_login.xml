@@ -15,24 +15,45 @@
         android:textFontWeight="900"
         android:textSize="45dp" />
 
+
     <de.hdodenhof.circleimageview.CircleImageView
         android:layout_width="150dp"
         android:layout_height="150dp"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="20dp"
-        android:layout_marginBottom="80dp"
+        android:layout_marginBottom="70dp"
         android:src="@drawable/e_commerce_logo_login" />
-
+    <ProgressBar
+        android:id="@+id/progress_bar_login_activity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="10dp"
+        android:visibility="gone"
+        />
+    <TextView
+        android:id="@+id/text_view_error_email_login"
+        android:text="email error"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#ED3709"
+        android:visibility="gone"/>
     <EditText
-        android:id="@+id/text_view_email_login"
+        android:id="@+id/edit_text_email_login"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_marginBottom="20dp"
         android:background="@drawable/my_edit_text"
         android:hint="Email" />
-
+    <TextView
+        android:id="@+id/text_view_error_password_login"
+        android:text="password error"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#ED3709"
+        android:visibility="gone"/>
     <EditText
-        android:id="@+id/text_view_password_login"
+        android:id="@+id/edit_text_password_login"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_marginBottom="10dp"

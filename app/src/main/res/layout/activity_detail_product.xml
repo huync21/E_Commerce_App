@@ -18,7 +18,6 @@
             android:id="@+id/image_view_product_detail"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:srcCompat="@drawable/nike"
             android:scaleType="fitCenter"
             />
     </FrameLayout>

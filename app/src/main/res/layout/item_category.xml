@@ -10,7 +10,6 @@
         android:id="@+id/circle_image_view_category_item"
         android:layout_width="96dp"
         android:layout_height="96dp"
-        android:src="@drawable/tv"
         app:civ_border_width="1dp"
         app:civ_border_color="#94A2F3"/>
     <TextView

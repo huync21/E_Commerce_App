@@ -16,6 +16,9 @@ public class JWTToken {
     @SerializedName("last_name")
     @Expose
     private String lastName;
+    @SerializedName("phone_number")
+    @Expose
+    private String phone;
     @SerializedName("refresh_token")
     @Expose
     private String refreshToken;
@@ -81,6 +84,14 @@ public class JWTToken {
 
     public void setAccessToken(String accessToken) {
         this.accessToken = accessToken;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
     @Override
