@@ -1,104 +1,298 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".views.DetailProductActivity">
+    android:layout_height="match_parent">
 
-    <FrameLayout
-        android:id="@+id/frame_layout_product_detail"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="350dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_height="match_parent"
+        tools:context=".views.DetailProductActivity">
 
-        <ImageView
-            android:id="@+id/image_view_product_detail"
+        <FrameLayout
+            android:id="@+id/frame_layout_product_detail"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scaleType="fitCenter"
-            />
-    </FrameLayout>
+            android:layout_height="400dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-    <RatingBar
-        android:id="@+id/rating_bar_detail_product"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:numStars="5"
-        android:rating="3"
-        android:stepSize="1"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.095"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/frame_layout_product_detail" />
+            <ImageView
+                android:id="@+id/image_view_product_detail"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="fitXY" />
+        </FrameLayout>
 
-    <TextView
-        android:id="@+id/text_view_product_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Giày Nike"
-        android:textSize="40sp"
-        android:textStyle="bold"
-        app:layout_constraintHorizontal_bias="0.066"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/rating_bar_detail_product" />
+        <RatingBar
+            android:id="@+id/rating_bar_detail_product"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:numStars="5"
+            android:rating="3"
+            android:isIndicator="true"
+            android:stepSize="1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.095"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/frame_layout_product_detail" />
 
-    <TextView
-        android:id="@+id/text_view_product_price"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:text="$300"
-        android:textSize="25sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.045"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_view_product_name" />
+        <TextView
+            android:id="@+id/tv_average_star"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="3 stars"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.103"
+            app:layout_constraintStart_toEndOf="@+id/rating_bar_detail_product"
+            app:layout_constraintTop_toBottomOf="@+id/frame_layout_product_detail" />
 
-    <TextView
-        android:id="@+id/text_view_product_description"
-        android:layout_width="350dp"
-        android:layout_height="100dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="44dp"
-        android:text="- Bộ VXL: Ryzen 3 AMD Ryzen 3 5300U (4C / 8T, 2.6 / 3.8GHz, 2MB L2 / 4MB L3)
+        <TextView
+            android:id="@+id/tv_rating_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:text="(2000 ratings)"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.151"
+            app:layout_constraintStart_toEndOf="@+id/rating_bar_detail_product"
+            app:layout_constraintTop_toBottomOf="@+id/frame_layout_product_detail" />
+
+        <TextView
+            android:id="@+id/text_view_product_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Giày Nike"
+            android:textSize="40sp"
+            android:textStyle="bold"
+            app:layout_constraintHorizontal_bias="0.066"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/rating_bar_detail_product" />
+
+        <TextView
+            android:id="@+id/text_view_product_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="$300"
+            android:textSize="25sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.045"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_view_product_name" />
+
+        <TextView
+            android:id="@+id/text_view_product_description"
+            android:layout_width="350dp"
+            android:layout_height="100dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="44dp"
+            android:text="- Bộ VXL: Ryzen 3 AMD Ryzen 3 5300U (4C / 8T, 2.6 / 3.8GHz, 2MB L2 / 4MB L3)
 - Cạc đồ họa: Integrated AMD Radeon Graphics
 - Bộ nhớ: 8Gb
 - Ổ cứng/ Ổ đĩa quang: 512GB SSD M.2 2242 PCIe 3.0x4 NVMe + Empty HDD Bay
 - Màn hình: 15.6Inch Full HD
 - Hệ điều hành: Windows 11 Home
 - Màu sắc/ Chất liệu: Grey/vỏ nhôm"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.064"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/text_view_product_price" />
+            android:gravity="start"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.05"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/text_view_product_price" />
 
-    <Button
-        android:id="@+id/button_buy_product"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="40dp"
-        android:text="Buy"
-        android:background="@drawable/button_buy_shape"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_view_product_description" />
+        <Button
+            android:id="@+id/button_buy_product"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="40dp"
+            android:background="@drawable/button_buy_shape"
+            android:text="Buy"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_view_product_description" />
 
-    <Button
-        android:id="@+id/button_add_to_cart_product"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="40dp"
-        android:text="Add To Cart"
-        android:background="@drawable/button_add_to_cart_shape"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.2"
-        app:layout_constraintStart_toEndOf="@+id/button_buy_product"
-        app:layout_constraintTop_toBottomOf="@+id/text_view_product_description" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <Button
+            android:id="@+id/button_add_to_cart_product"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="40dp"
+            android:background="@drawable/button_add_to_cart_shape"
+            android:text="Add To Cart"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.2"
+            app:layout_constraintStart_toEndOf="@+id/button_buy_product"
+            app:layout_constraintTop_toBottomOf="@+id/text_view_product_description" />
+
+        <TextView
+            android:id="@+id/tv_star_num"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="4dp"
+            android:includeFontPadding="false"
+            android:lineSpacingExtra="0dp"
+            android:text="3"
+            android:textSize="70sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView_ratings" />
+
+        <RatingBar
+            android:id="@+id/rating_bar2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:numStars="5"
+            android:rating="3"
+            android:layout_marginLeft="20dp"
+            style="?android:attr/ratingBarStyleSmall"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_star_num" />
+
+        <TextView
+            android:id="@+id/tv_rating_number2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="0dp"
+            android:text="2000"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/rating_bar2" />
+
+        <TextView
+            android:id="@+id/textView_ratings"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="Ratings"
+            android:textSize="40sp"
+            app:layout_constraintHorizontal_bias="0.061"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/button_buy_product" />
+
+
+        <TextView
+            android:id="@+id/tv_5star"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="140dp"
+            android:layout_marginTop="5dp"
+            android:padding="0dp"
+            android:text="5 star"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView_ratings" />
+
+
+
+        <ProgressBar
+            android:id="@+id/progress_bar_5star"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+            android:layout_width="200dp"
+            android:layout_height="20dp"
+            android:layout_marginStart="11dp"
+            android:layout_marginEnd="24dp"
+            android:scaleY="3"
+            android:max="100"
+            android:progress="30"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/tv_5star"
+            app:layout_constraintTop_toTopOf="@+id/tv_5star" />
+
+        <TextView
+            android:id="@+id/tv_4star"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="140dp"
+            android:layout_marginTop="4dp"
+            android:text="4 star"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_5star" />
+
+        <ProgressBar
+            android:id="@+id/progress_bar_4star"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+            android:layout_width="200dp"
+            android:layout_height="20dp"
+            android:layout_marginStart="11dp"
+            android:layout_marginEnd="24dp"
+            android:scaleY="3"
+            android:max="100"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/tv_4star"
+            app:layout_constraintTop_toTopOf="@+id/tv_4star" />
+
+        <TextView
+            android:id="@+id/tv_3star"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="140dp"
+            android:layout_marginTop="4dp"
+            android:text="3 star"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_4star" />
+
+        <ProgressBar
+            android:id="@+id/progress_bar_3star"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+            android:layout_width="200dp"
+            android:layout_height="20dp"
+            android:layout_marginStart="11dp"
+            android:layout_marginEnd="24dp"
+            android:scaleY="3"
+            android:max="100"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/tv_3star"
+            app:layout_constraintTop_toTopOf="@+id/tv_3star" />
+
+        <TextView
+            android:id="@+id/tv_2star"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="140dp"
+            android:layout_marginTop="4dp"
+            android:text="2 star"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_3star" />
+
+        <ProgressBar
+            android:id="@+id/progress_bar_2star"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+            android:layout_width="200dp"
+            android:layout_height="20dp"
+            android:layout_marginStart="11dp"
+            android:layout_marginEnd="24dp"
+            android:scaleY="3"
+            android:max="100"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/tv_2star"
+            app:layout_constraintTop_toTopOf="@+id/tv_2star" />
+        <TextView
+            android:id="@+id/tv_1star"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="140dp"
+            android:layout_marginTop="4dp"
+            android:text="1 star"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_2star" />
+
+        <ProgressBar
+            android:id="@+id/progress_bar_1star"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+            android:layout_width="200dp"
+            android:layout_height="20dp"
+            android:layout_marginStart="11dp"
+            android:layout_marginEnd="24dp"
+            android:scaleY="3"
+            android:max="100"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/tv_1star"
+            app:layout_constraintTop_toTopOf="@+id/tv_1star" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>
