@@ -88,7 +88,7 @@
         <TextView
             android:id="@+id/text_view_product_description"
             android:layout_width="350dp"
-            android:layout_height="100dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="44dp"
             android:text="- Bộ VXL: Ryzen 3 AMD Ryzen 3 5300U (4C / 8T, 2.6 / 3.8GHz, 2MB L2 / 4MB L3)
@@ -293,6 +293,34 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/tv_1star"
             app:layout_constraintTop_toTopOf="@+id/tv_1star" />
+
+        <TextView
+            android:id="@+id/tv_leave_your_rating"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/progress_bar_1star"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintHorizontal_bias="0.116"
+            android:text="Leave your rating for this product ->"
+            android:textColor="#1A7A09"
+            android:layout_marginTop="20dp"
+            android:textColorHighlight="#1A7A09"
+            />
+
+        <RatingBar
+            android:id="@+id/rating_bar_user_rate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:numStars="5"
+            android:stepSize="1"
+            app:layout_constraintHorizontal_bias="0.116"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_leave_your_rating" />
+
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.core.widget.NestedScrollView>
