@@ -5,6 +5,7 @@ import com.hfad.e_commerce_app.models.Category;
 import com.hfad.e_commerce_app.models.JWTToken;
 import com.hfad.e_commerce_app.models.Product;
 import com.hfad.e_commerce_app.models.ProductPagination;
+import com.hfad.e_commerce_app.models.Rating;
 import com.hfad.e_commerce_app.models.User;
 
 import java.util.List;
@@ -45,4 +46,7 @@ public interface APIServiceInterface {
 
     @GET("ratings/average-star/")
     Call<ResponseBody> getAverageStarOfProduct(@Query("product_id") int productId);
+
+    @GET("ratings/")
+    Call<List<Rating>> getAllRatingsOfProduct(@Query("product_id") int productId);
 }

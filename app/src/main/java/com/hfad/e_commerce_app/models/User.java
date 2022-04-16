@@ -16,12 +16,16 @@ public class User {
     @SerializedName("last_name")
     @Expose
     private String lastName;
+    @SerializedName("image")
+    @Expose
+    private String image;
 
-    public User(String email, String userName, String firstName, String lastName) {
+    public User(String email, String userName, String firstName, String lastName, String image) {
         this.email = email;
         this.userName = userName;
         this.firstName = firstName;
         this.lastName = lastName;
+        this.image =image;
     }
 
     public User() {
@@ -57,6 +61,14 @@ public class User {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 
     @Override

@@ -25,14 +25,18 @@ public class JWTToken {
     @SerializedName("access_token")
     @Expose
     private String accessToken;
+    @SerializedName("image")
+    @Expose
+    private String image;
 
-    public JWTToken(String email, String userName, String firstName, String lastName, String refreshToken, String accessToken) {
+    public JWTToken(String email, String userName, String firstName, String lastName, String refreshToken, String accessToken, String image) {
         this.email = email;
         this.userName = userName;
         this.firstName = firstName;
         this.lastName = lastName;
         this.refreshToken = refreshToken;
         this.accessToken = accessToken;
+        this.image = image;
     }
 
     public JWTToken() {
@@ -92,6 +96,14 @@ public class JWTToken {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 
     @Override

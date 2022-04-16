@@ -14,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.bumptech.glide.Glide;
 import com.hfad.e_commerce_app.R;
 import com.hfad.e_commerce_app.token_management.TokenManager;
 
@@ -51,6 +52,9 @@ public class PersonalFragment extends Fragment {
             edPhone.setText(tokenManager.getUserPhone());
         }else{
             edPhone.setText("");
+        }
+        if(tokenManager.getImageUrl() !=null){
+            Glide.with(getActivity()).load(tokenManager.getImageUrl()).into(circleImageView);
         }
 
     }

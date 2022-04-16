@@ -1,6 +1,8 @@
 package com.hfad.e_commerce_app.views;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,7 +16,9 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.hfad.e_commerce_app.R;
+import com.hfad.e_commerce_app.adapters.RatingAdapter;
 import com.hfad.e_commerce_app.models.Product;
+import com.hfad.e_commerce_app.models.Rating;
 import com.hfad.e_commerce_app.utils.APIUtils;
 
 import org.json.JSONException;
@@ -35,9 +39,12 @@ public class DetailProductActivity extends AppCompatActivity {
     private TextView tvAverageStar1, tvRatingNumber1, tvAverageStar2, tvRatingNumber2;
     private ProgressBar progressBar5,progressBar4,progressBar3,progressBar2,progressBar1;
     private Button btnBuy,btnAddToCart;
+    private RecyclerView recyclerView;
+    private RatingAdapter ratingAdapter;
 
     private Product product;
     private int productId;
+    private List<Rating> ratingList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,14 +54,21 @@ public class DetailProductActivity extends AppCompatActivity {
         Intent intent = getIntent();
         productId= intent.getIntExtra("productId",0);
 
+        ratingAdapter = new RatingAdapter(ratingList, DetailProductActivity.this);
+        recyclerView.setAdapter(ratingAdapter);
+        recyclerView.setLayoutManager(new GridLayoutManager(DetailProductActivity.this,1));
+
         callDetailProductApi(productId);
         callAverageStarAPI(productId);
+        callAPIRatings(productId);
 
         btnBuy.setOnClickListener(view -> {
-            callAverageStarAPI(productId);
+            callAPIRatings(productId);
         });
 
     }
+
+
 
     private void initView() {
         imageView = findViewById(R.id.image_view_product_detail);
@@ -74,6 +88,7 @@ public class DetailProductActivity extends AppCompatActivity {
         progressBar5 = findViewById(R.id.progress_bar_5star);
         btnBuy = findViewById(R.id.button_buy_product);
         btnAddToCart =findViewById(R.id.button_add_to_cart_product);
+        recyclerView = findViewById(R.id.recycler_view_rating);
     }
 
     private void callDetailProductApi(int productId){
@@ -141,6 +156,24 @@ public class DetailProductActivity extends AppCompatActivity {
                     @Override
                     public void onFailure(Call<ResponseBody> call, Throwable t) {
                         t.printStackTrace();
+                    }
+                });
+    }
+
+    private void callAPIRatings(int productId){
+        APIUtils.getApiServiceInterface().getAllRatingsOfProduct(productId)
+                .enqueue(new Callback<List<Rating>>() {
+                    @Override
+                    public void onResponse(Call<List<Rating>> call, Response<List<Rating>> response) {
+                        if(response.isSuccessful() && response.body()!=null){
+                             ratingList = response.body();
+                             ratingAdapter.setmListRating(ratingList);
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<List<Rating>> call, Throwable t) {
+
                     }
                 });
     }
