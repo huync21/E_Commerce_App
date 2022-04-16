@@ -9,6 +9,7 @@ import com.hfad.e_commerce_app.models.User;
 
 import java.util.List;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
@@ -41,4 +42,7 @@ public interface APIServiceInterface {
 
     @GET("products/{productId}")
     Call<Product> getProductDetail(@Path("productId") int productId);
+
+    @GET("ratings/average-star/")
+    Call<ResponseBody> getAverageStarOfProduct(@Query("product_id") int productId);
 }
