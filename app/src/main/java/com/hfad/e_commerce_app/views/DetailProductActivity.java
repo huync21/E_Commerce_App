@@ -1,5 +1,6 @@
 package com.hfad.e_commerce_app.views;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -7,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -19,6 +21,7 @@ import com.hfad.e_commerce_app.R;
 import com.hfad.e_commerce_app.adapters.RatingAdapter;
 import com.hfad.e_commerce_app.models.Product;
 import com.hfad.e_commerce_app.models.Rating;
+import com.hfad.e_commerce_app.token_management.TokenManager;
 import com.hfad.e_commerce_app.utils.APIUtils;
 
 import org.json.JSONException;
@@ -41,16 +44,22 @@ public class DetailProductActivity extends AppCompatActivity {
     private Button btnBuy,btnAddToCart;
     private RecyclerView recyclerView;
     private RatingAdapter ratingAdapter;
+    private TextView tvMakeANewRating;
+    private RatingBar ratingBarForUserToRate;
 
     private Product product;
     private int productId;
     private List<Rating> ratingList;
+    private TokenManager tokenManager;
+
+    public static int REQUEST_CODE = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail_product);
         initView();
+        tokenManager = new TokenManager(this);
         Intent intent = getIntent();
         productId= intent.getIntExtra("productId",0);
 
@@ -62,13 +71,65 @@ public class DetailProductActivity extends AppCompatActivity {
         callAverageStarAPI(productId);
         callAPIRatings(productId);
 
-        btnBuy.setOnClickListener(view -> {
-            callAPIRatings(productId);
+        tvMakeANewRating.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int starNum = (int)ratingBarForUserToRate.getRating();
+                if(checkIfUserHasLogin()) {
+                    navigateToMakeARatingActivity(starNum);
+                }
+                else{
+                    Toast.makeText(DetailProductActivity.this, "Please login to make a rating.", Toast.LENGTH_SHORT).show();
+                    navigateToLoginActivity();
+                }
+            }
         });
+
+        ratingBarForUserToRate.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+            @Override
+            public void onRatingChanged(RatingBar ratingBar, float v, boolean b) {
+                int starNum = (int) v;
+                if(checkIfUserHasLogin()) {
+                    navigateToMakeARatingActivity(starNum);
+                }
+                else{
+                    Toast.makeText(DetailProductActivity.this, "Please login to make a rating.", Toast.LENGTH_SHORT).show();
+                    navigateToLoginActivity();
+                }
+            }
+        });
+
+
+
 
     }
 
+    private boolean checkIfUserHasLogin(){
+        if(tokenManager.getAccessToken()==null){
+            return false;
+        }
+        return true;
+    }
 
+    private void navigateToLoginActivity(){
+        Intent intent = new Intent(this, LoginActivity.class);
+        startActivity(intent);
+    }
+    private void navigateToMakeARatingActivity(int starNum){
+        Intent intent = new Intent(this, MakeARatingActivity.class);
+        intent.putExtra("starNum", starNum);
+        intent.putExtra("product",product);
+        startActivityForResult(intent,REQUEST_CODE);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_CODE  && resultCode  == RESULT_OK) {
+            callAPIRatings(productId);
+            callAverageStarAPI(productId);
+        }
+    }
 
     private void initView() {
         imageView = findViewById(R.id.image_view_product_detail);
@@ -89,6 +150,8 @@ public class DetailProductActivity extends AppCompatActivity {
         btnBuy = findViewById(R.id.button_buy_product);
         btnAddToCart =findViewById(R.id.button_add_to_cart_product);
         recyclerView = findViewById(R.id.recycler_view_rating);
+        tvMakeANewRating = findViewById(R.id.tv_leave_your_rating);
+        ratingBarForUserToRate = findViewById(R.id.rating_bar_user_rate);
     }
 
     private void callDetailProductApi(int productId){
@@ -167,7 +230,8 @@ public class DetailProductActivity extends AppCompatActivity {
                     public void onResponse(Call<List<Rating>> call, Response<List<Rating>> response) {
                         if(response.isSuccessful() && response.body()!=null){
                              ratingList = response.body();
-                             ratingAdapter.setmListRating(ratingList);
+                             ratingAdapter = new RatingAdapter(ratingList, DetailProductActivity.this);
+                             recyclerView.setAdapter(ratingAdapter);
                         }
                     }
 

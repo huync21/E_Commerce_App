@@ -304,7 +304,7 @@
             app:layout_constraintHorizontal_bias="0.116"
             android:text="Leave your rating for this product ->"
             android:textColor="#1A7A09"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="30dp"
             android:textColorHighlight="#1A7A09"
             />
 

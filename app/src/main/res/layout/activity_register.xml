@@ -23,7 +23,7 @@
         android:layout_marginBottom="20dp"
         android:background="@drawable/my_edit_text"
         android:hint="User name"
-        android:inputType="textPassword" />
+        android:inputType="text" />
     <EditText
         android:id="@+id/text_view_firstname_register"
         android:layout_width="match_parent"
@@ -31,7 +31,8 @@
         android:layout_marginBottom="20dp"
         android:background="@drawable/my_edit_text"
         android:hint="First Name"
-        android:inputType="textPassword" />
+        android:inputType="text" />
+
     <EditText
         android:id="@+id/text_view_lastname_register"
         android:layout_width="match_parent"
@@ -39,7 +40,8 @@
         android:layout_marginBottom="20dp"
         android:background="@drawable/my_edit_text"
         android:hint="Last Name"
-        android:inputType="textPassword" />
+        android:inputType="text" />
+
     <EditText
         android:id="@+id/text_view_password_register"
         android:layout_width="match_parent"

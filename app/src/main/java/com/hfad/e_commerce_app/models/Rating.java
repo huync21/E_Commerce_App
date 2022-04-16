@@ -16,7 +16,7 @@ public class Rating implements Serializable {
     @SerializedName("comment")
     @Expose
     private String comment;
-    @SerializedName("created_at")
+    @SerializedName("modified_at")
     @Expose
     private String createdAt;
 
