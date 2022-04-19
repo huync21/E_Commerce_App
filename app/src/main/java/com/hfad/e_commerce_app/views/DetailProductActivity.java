@@ -109,6 +109,7 @@ public class DetailProductActivity extends AppCompatActivity {
 
         // tinh nang add to cart
         editTextQuantity.setSelection(editTextQuantity.getText().length());
+
         productQuantity = Integer.parseInt(editTextQuantity.getText().toString());
         btnDecreaseQuantity.setOnClickListener(view -> {
             String input = editTextQuantity.getText().toString();

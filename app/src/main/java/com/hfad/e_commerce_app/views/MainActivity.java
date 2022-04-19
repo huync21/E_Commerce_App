@@ -55,7 +55,6 @@ public class MainActivity extends AppCompatActivity {
                 tokenManager = new TokenManager(MainActivity.this);
                 accessToken = tokenManager.getAccessToken();
                 Fragment fragment = null;
-                String name = null;
                 switch (item.getItemId()) {
                     case R.id.menu_item_home:
                         fragment = new HomeFragment();

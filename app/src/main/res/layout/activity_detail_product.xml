@@ -132,6 +132,7 @@
             android:ems="10"
             android:inputType="number"
             android:text="1"
+            android:focusedByDefault="false"
             app:layout_constraintStart_toEndOf="@+id/btn_decrease_cart_item_quantity"
             app:layout_constraintTop_toTopOf="@+id/btn_decrease_cart_item_quantity" />
         <Button

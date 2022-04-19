@@ -20,6 +20,16 @@ import com.hfad.e_commerce_app.models.CartItem;
 import java.util.List;
 
 public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder> {
+    public interface ItemClickListener {
+        void onDeleteCartItem(int cartId);
+        void onCartItemQuantityChanged(int productId, int quantity, int cartId);
+    }
+    private ItemClickListener itemClickListener;
+
+    public void setOnItemClickListener(ItemClickListener itemClickListener) {
+        this.itemClickListener = itemClickListener;
+    }
+
     private List<CartItem> mListCartItems;
     private Context context;
 
@@ -42,6 +52,22 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
         holder.tvProductName.setText(cartItem.getProduct().getName());
         holder.tvProductPrice.setText("$"+cartItem.getProduct().getPrice()+"");
         holder.edQuantity.setText(cartItem.getQuantity()+"");
+        holder.edQuantity.setSelection(holder.edQuantity.getText().length());
+
+        holder.btnDeleteCartItem.setOnClickListener(view -> {
+            itemClickListener.onDeleteCartItem(cartItem.getId());
+        });
+        holder.btnIncrease.setOnClickListener(view -> {
+            int quantity = cartItem.getQuantity()+1;
+            itemClickListener.onCartItemQuantityChanged(cartItem.getProduct().getId(),quantity, cartItem.getId());
+        });
+        holder.btnDecrease.setOnClickListener(view -> {
+            int quantity = cartItem.getQuantity()-1;
+            itemClickListener.onCartItemQuantityChanged(cartItem.getProduct().getId(),quantity, cartItem.getId());
+        });
+
+
+
     }
 
     @Override
@@ -73,5 +99,25 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
     public void setmListCartItems(List<CartItem> mListCartItems) {
         this.mListCartItems = mListCartItems;
         notifyDataSetChanged();
+    }
+
+    public void deleteCartItem(int cartItemId){
+        for(int i=0;i<mListCartItems.size();i++){
+            CartItem cartItem = mListCartItems.get(i);
+            if(cartItem.getId() == cartItemId){
+                mListCartItems.remove(cartItem);
+                notifyItemRemoved(i);
+            }
+        }
+    }
+
+    public void updateCartItem(int cartItemId,int updatedQuantity){
+        for(int i=0;i<mListCartItems.size();i++){
+            CartItem cartItem = mListCartItems.get(i);
+            if(cartItem.getId() == cartItemId){
+                cartItem.setQuantity(updatedQuantity);
+                notifyItemChanged(i);
+            }
+        }
     }
 }
