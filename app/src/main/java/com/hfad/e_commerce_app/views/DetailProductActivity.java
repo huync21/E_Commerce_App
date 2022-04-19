@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RatingBar;
@@ -17,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.google.gson.Gson;
 import com.hfad.e_commerce_app.R;
 import com.hfad.e_commerce_app.adapters.RatingAdapter;
 import com.hfad.e_commerce_app.models.Product;
@@ -46,13 +48,18 @@ public class DetailProductActivity extends AppCompatActivity {
     private RatingAdapter ratingAdapter;
     private TextView tvMakeANewRating;
     private RatingBar ratingBarForUserToRate;
+    private Button btnDecreaseQuantity, btnIncreaseQuantity;
+    private EditText editTextQuantity;
 
     private Product product;
     private int productId;
     private List<Rating> ratingList;
     private TokenManager tokenManager;
+    private int productQuantity;
 
     public static int REQUEST_CODE = 2;
+    public static String ADDED_TO_CART = "added to cart";
+    public static int ADDED_TO_CART_CODE = 3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,6 +107,38 @@ public class DetailProductActivity extends AppCompatActivity {
         });
 
 
+        // tinh nang add to cart
+        editTextQuantity.setSelection(editTextQuantity.getText().length());
+        productQuantity = Integer.parseInt(editTextQuantity.getText().toString());
+        btnDecreaseQuantity.setOnClickListener(view -> {
+            String input = editTextQuantity.getText().toString();
+            if(!input.isEmpty()){
+                productQuantity = Integer.parseInt(editTextQuantity.getText().toString());
+                if(productQuantity >0){
+                    productQuantity-=1;
+                    editTextQuantity.setText(productQuantity+"");
+                    editTextQuantity.setSelection(editTextQuantity.getText().length());
+                }
+            }
+
+
+        });
+        btnIncreaseQuantity.setOnClickListener(view -> {
+            String input = editTextQuantity.getText().toString();
+            if(!input.isEmpty()){
+                productQuantity = Integer.parseInt(editTextQuantity.getText().toString());
+                productQuantity++;
+                editTextQuantity.setText(productQuantity+"");
+                editTextQuantity.setSelection(editTextQuantity.getText().length());
+            }
+
+
+        });
+
+
+        btnAddToCart.setOnClickListener(view -> {
+            callAPIAddToCartOrUpdate(productId,productQuantity);
+        });
 
 
     }
@@ -128,6 +167,8 @@ public class DetailProductActivity extends AppCompatActivity {
         if (requestCode == REQUEST_CODE  && resultCode  == RESULT_OK) {
             callAPIRatings(productId);
             callAverageStarAPI(productId);
+//            ratingBarForUserToRate.setRating(0);
+//            ratingBarForUserToRate.invalidate();
         }
     }
 
@@ -152,6 +193,9 @@ public class DetailProductActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.recycler_view_rating);
         tvMakeANewRating = findViewById(R.id.tv_leave_your_rating);
         ratingBarForUserToRate = findViewById(R.id.rating_bar_user_rate);
+        btnDecreaseQuantity = findViewById(R.id.btn_decrease_cart_item_quantity);
+        btnIncreaseQuantity = findViewById(R.id.btn_increase_cart_item_quantity);
+        editTextQuantity = findViewById(R.id.edit_text_cart_item_quantity);
     }
 
     private void callDetailProductApi(int productId){
@@ -241,4 +285,34 @@ public class DetailProductActivity extends AppCompatActivity {
                     }
                 });
     }
+
+    private void callAPIAddToCartOrUpdate(int productId, int productQuantity){
+        APIUtils.getApiServiceInterface().createOrUpdateCartItem("Bearer "+tokenManager.getAccessToken(),productQuantity,productId)
+                .enqueue(new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                        if(response.isSuccessful() && response.body()!=null){
+                            try {
+                                String jsonStringResponse = response.body().string();
+                                JSONObject jsonObject = new JSONObject(jsonStringResponse);
+                                String message = jsonObject.getString("message");
+                                Toast.makeText(DetailProductActivity.this, message, Toast.LENGTH_SHORT).show();
+
+                                Intent intent1 = new Intent(DetailProductActivity.this, MainActivity.class);
+                                intent1.putExtra(ADDED_TO_CART,ADDED_TO_CART_CODE);
+                                startActivity(intent1);
+                            } catch (IOException | JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+                    }
+                });
+    }
+
+
 }

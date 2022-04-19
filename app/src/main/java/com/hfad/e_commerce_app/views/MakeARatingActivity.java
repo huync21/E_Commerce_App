@@ -67,7 +67,7 @@ public class MakeARatingActivity extends AppCompatActivity {
         btnRate.setOnClickListener(view -> {
             int starNumber = (int) ratingBar.getRating();
             String comment = editText.getText().toString();
-            callCreateRatingAPI(starNum,comment, product.getId());
+            callCreateRatingAPI(starNumber,comment, product.getId());
         });
 
     }

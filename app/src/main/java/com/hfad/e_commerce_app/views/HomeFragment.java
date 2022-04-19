@@ -181,6 +181,7 @@ public class HomeFragment extends Fragment {
 
     }
 
+
     private void callApiCategory() {
         APIUtils.getApiServiceInterface().getListCategories()
                 .enqueue(new Callback<List<Category>>() {

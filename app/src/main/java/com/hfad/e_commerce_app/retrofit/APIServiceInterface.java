@@ -1,6 +1,7 @@
 package com.hfad.e_commerce_app.retrofit;
 
 import com.hfad.e_commerce_app.models.Banner;
+import com.hfad.e_commerce_app.models.CartItem;
 import com.hfad.e_commerce_app.models.Category;
 import com.hfad.e_commerce_app.models.JWTToken;
 import com.hfad.e_commerce_app.models.Product;
@@ -54,4 +55,13 @@ public interface APIServiceInterface {
     @FormUrlEncoded
     @POST("ratings/")
     Call<ResponseBody> createRating(@Header("Authorization") String authHeader,@Field("star_num") int starNum, @Field("comment") String comment,@Query("product_id") int productId);
+
+    @GET("carts")
+    Call<List<CartItem>> getAllCartItems(@Header("Authorization") String authHeader);
+
+    @FormUrlEncoded
+    @POST("carts/")
+    Call<ResponseBody> createOrUpdateCartItem(@Header("Authorization") String authHeader,
+                                              @Field("quantity") int quantity,
+                                              @Field("product_id") int productId);
 }
