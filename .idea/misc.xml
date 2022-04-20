@@ -10,11 +10,13 @@
         <entry key="..\:/Users/LENOVO/AndroidStudioProjects/E_Commerce_App/app/src/main/res/drawable/edit_text_make_rating_shape.xml" value="0.2595" />
         <entry key="..\:/Users/LENOVO/AndroidStudioProjects/E_Commerce_App/app/src/main/res/drawable/ic_baseline_remove_shopping_cart_24.xml" value="0.1195" />
         <entry key="..\:/Users/LENOVO/AndroidStudioProjects/E_Commerce_App/app/src/main/res/drawable/search_bar_shape.xml" value="0.1" />
+        <entry key="..\:/Users/LENOVO/AndroidStudioProjects/E_Commerce_App/app/src/main/res/layout/activity_choose_order_info.xml" value="0.176" />
         <entry key="..\:/Users/LENOVO/AndroidStudioProjects/E_Commerce_App/app/src/main/res/layout/activity_detail_product.xml" value="0.2" />
         <entry key="..\:/Users/LENOVO/AndroidStudioProjects/E_Commerce_App/app/src/main/res/layout/activity_login.xml" value="0.1" />
         <entry key="..\:/Users/LENOVO/AndroidStudioProjects/E_Commerce_App/app/src/main/res/layout/activity_main.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/LENOVO/AndroidStudioProjects/E_Commerce_App/app/src/main/res/layout/activity_make_arating.xml" value="0.264" />
         <entry key="..\:/Users/LENOVO/AndroidStudioProjects/E_Commerce_App/app/src/main/res/layout/activity_register.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/LENOVO/AndroidStudioProjects/E_Commerce_App/app/src/main/res/layout/activity_review_and_place_order.xml" value="0.264" />
         <entry key="..\:/Users/LENOVO/AndroidStudioProjects/E_Commerce_App/app/src/main/res/layout/fragment_cart.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/LENOVO/AndroidStudioProjects/E_Commerce_App/app/src/main/res/layout/fragment_home.xml" value="0.264" />
         <entry key="..\:/Users/LENOVO/AndroidStudioProjects/E_Commerce_App/app/src/main/res/layout/fragment_orders.xml" value="0.25416666666666665" />
@@ -26,8 +28,11 @@
         <entry key="..\:/Users/LENOVO/AndroidStudioProjects/E_Commerce_App/app/src/main/res/layout/item_category.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/LENOVO/AndroidStudioProjects/E_Commerce_App/app/src/main/res/layout/item_home_banner.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/LENOVO/AndroidStudioProjects/E_Commerce_App/app/src/main/res/layout/item_new_product.xml" value="0.264" />
+        <entry key="..\:/Users/LENOVO/AndroidStudioProjects/E_Commerce_App/app/src/main/res/layout/item_payment_spinner.xml" value="0.23148148148148148" />
         <entry key="..\:/Users/LENOVO/AndroidStudioProjects/E_Commerce_App/app/src/main/res/layout/item_product.xml" value="0.1" />
         <entry key="..\:/Users/LENOVO/AndroidStudioProjects/E_Commerce_App/app/src/main/res/layout/item_rating.xml" value="0.264" />
+        <entry key="..\:/Users/LENOVO/AndroidStudioProjects/E_Commerce_App/app/src/main/res/layout/item_recycler_view_review_order.xml" value="0.22916666666666666" />
+        <entry key="..\:/Users/LENOVO/AndroidStudioProjects/E_Commerce_App/app/src/main/res/layout/item_shipment_spinner.xml" value="0.264" />
         <entry key="..\:/Users/LENOVO/AndroidStudioProjects/E_Commerce_App/app/src/main/res/layout/my_edit_text.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/LENOVO/AndroidStudioProjects/E_Commerce_App/app/src/main/res/layout/mybutton.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/LENOVO/AndroidStudioProjects/E_Commerce_App/app/src/main/res/menu/menu.xml" value="0.25416666666666665" />

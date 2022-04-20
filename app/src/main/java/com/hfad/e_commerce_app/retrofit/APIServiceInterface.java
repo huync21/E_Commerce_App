@@ -4,9 +4,11 @@ import com.hfad.e_commerce_app.models.Banner;
 import com.hfad.e_commerce_app.models.CartItem;
 import com.hfad.e_commerce_app.models.Category;
 import com.hfad.e_commerce_app.models.JWTToken;
+import com.hfad.e_commerce_app.models.Payment;
 import com.hfad.e_commerce_app.models.Product;
 import com.hfad.e_commerce_app.models.ProductPagination;
 import com.hfad.e_commerce_app.models.Rating;
+import com.hfad.e_commerce_app.models.Shipment;
 import com.hfad.e_commerce_app.models.User;
 
 import java.util.List;
@@ -74,4 +76,11 @@ public interface APIServiceInterface {
 
     @DELETE("carts/{cartId}/")
     Call<ResponseBody> deleteCartItem(@Header("Authorization") String authHeader,@Path("cartId") int cartId);
+
+    @GET("orders/payment-methods")
+    Call<List<Payment>> getAllPaymentMethods();
+
+    @GET("orders/shipment-methods")
+    Call<List<Shipment>> getAllShipmentMethods();
+
 }

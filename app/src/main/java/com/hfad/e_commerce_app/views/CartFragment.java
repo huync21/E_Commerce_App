@@ -1,5 +1,6 @@
 package com.hfad.e_commerce_app.views;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,6 +25,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,11 +35,10 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class CartFragment extends Fragment {
-
     private RecyclerView recyclerView;
     private CartAdapter cartAdapter;
-    private Button btnDecrease, btnIncrease;
-    private EditText editTextQuantity;
+    private Button btnMakeOrder;
+
 
     private List<CartItem> mListCartItems = new ArrayList<>();
 
@@ -55,10 +56,7 @@ public class CartFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         // init view
         recyclerView = view.findViewById(R.id.recycler_view_cart_items);
-        btnIncrease = view.findViewById(R.id.btn_increase_cart_item_quantity);
-        btnDecrease = view.findViewById(R.id.btn_decrease_cart_item_quantity);
-        editTextQuantity = view.findViewById(R.id.edit_text_cart_item_quantity);
-
+        btnMakeOrder = view.findViewById(R.id.btnMakeOrder);
         tokenManager = new TokenManager(getActivity());
 
         cartAdapter = new CartAdapter(mListCartItems, getActivity());
@@ -77,6 +75,13 @@ public class CartFragment extends Fragment {
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(),1));
 
         callAPIGetAllCartItemOfUser();
+
+        btnMakeOrder.setOnClickListener(view1 -> {
+            Intent intent = new Intent(getActivity(), ChooseOrderInfoActivity.class);
+            intent.putExtra("listCartItem", (Serializable) mListCartItems);
+            startActivity(intent);
+        });
+
 
 
     }

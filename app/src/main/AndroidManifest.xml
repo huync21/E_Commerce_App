@@ -12,19 +12,25 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.E_Commerce_App">
         <activity
-            android:name=".views.MakeARatingActivity"
-            android:windowSoftInputMode="stateHidden"
+            android:name=".views.ReviewAndPlaceOrderActivity"
             android:exported="false" />
+        <activity
+            android:name=".views.ChooseOrderInfoActivity"
+            android:exported="false" />
+        <activity
+            android:name=".views.MakeARatingActivity"
+            android:exported="false"
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".views.RegisterActivity"
             android:exported="true" />
         <activity
             android:name=".views.LoginActivity"
-            android:exported="true"></activity>
+            android:exported="true" />
         <activity
             android:name=".views.DetailProductActivity"
-            android:windowSoftInputMode="stateHidden"
-            android:exported="true" />
+            android:exported="true"
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".views.MainActivity"
             android:exported="true">
