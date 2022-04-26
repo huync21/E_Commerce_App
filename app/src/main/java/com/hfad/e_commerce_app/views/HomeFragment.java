@@ -132,7 +132,6 @@ public class HomeFragment extends Fragment {
             @Override
             public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
                 if (scrollY == v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight()) {
-                    page++;
                     if(page>totalPage) {
                         progressBarProducts.setVisibility(View.GONE);
                     }else{
@@ -157,6 +156,16 @@ public class HomeFragment extends Fragment {
             categoryAdapter.setmListCategory(mListCategories);
             productAdapter.setmListProduct(mListProducts);
         }
+
+        // Xu ly su kien khi click vao 1 item category:
+        categoryAdapter.setItemClickedListener(new CategoryAdapter.ItemClickedListener() {
+            @Override
+            public void onItemClicked(Category category) {
+                Intent intent = new Intent(getActivity(), ProductsByCategoryActivity.class);
+                intent.putExtra("category", category);
+                startActivity(intent);
+            }
+        });
 
         // Xử lý sự kiện khi click vào 1 item product
         productAdapter.setItemClickListener(new ProductAdapter.OnItemClickListener() {
@@ -233,6 +242,8 @@ public class HomeFragment extends Fragment {
                             totalPage = productPagination.getTotal_pages();
                             mListProducts.addAll(productPagination.getResults());
                             productAdapter.setmListProduct(mListProducts);
+
+                            HomeFragment.this.page++;
                         }
                     }
 

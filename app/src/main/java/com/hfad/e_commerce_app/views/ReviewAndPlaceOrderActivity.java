@@ -78,14 +78,13 @@ public class ReviewAndPlaceOrderActivity extends AppCompatActivity {
         for(CartItem cartItem: cartItemList){
             subtotal+=cartItem.getProduct().getPrice();
         }
+
         tvSubtotal.setText("$"+subtotal+"");
         tvShipping.setText("$"+shipment.getPrice());
         orderTotal = subtotal+shipment.getPrice();
         tvOrderTotal.setText("$"+orderTotal+"");
-
         Glide.with(this).load(payment.getImage()).into(imageViewPayment);
         Glide.with(this).load(shipment.getImage()).into(imageViewShipment);
-
         reviewOrderAdapter = new ReviewOrderAdapter(cartItemList);
         recyclerView.setAdapter(reviewOrderAdapter);
         recyclerView.setLayoutManager(new GridLayoutManager(this,1));

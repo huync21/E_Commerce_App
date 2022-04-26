@@ -41,6 +41,9 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
             Glide.with(activity).load(category.getImage()).into(holder.circleImageView);
             holder.textView.setText(category.getName());
         }
+        holder.itemView.setOnClickListener(view -> {
+            itemClickedListener.onItemClicked(mListCategory.get(holder.getAdapterPosition()));
+        });
     }
 
     @Override
@@ -62,5 +65,15 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
     public void setmListCategory(List<Category> mListCategory){
         this.mListCategory = mListCategory;
         notifyDataSetChanged();
+    }
+
+    public interface ItemClickedListener{
+        void onItemClicked(Category category);
+    }
+
+    public ItemClickedListener itemClickedListener;
+
+    public void setItemClickedListener(ItemClickedListener itemClickedListener) {
+        this.itemClickedListener = itemClickedListener;
     }
 }

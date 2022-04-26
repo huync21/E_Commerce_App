@@ -12,6 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.E_Commerce_App">
         <activity
+            android:name=".views.ProductsByCategoryActivity"
+            android:exported="false" />
+        <activity
             android:name=".views.ReviewAndPlaceOrderActivity"
             android:exported="false" />
         <activity

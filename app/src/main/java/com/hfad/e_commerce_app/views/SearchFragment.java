@@ -80,7 +80,6 @@ public class SearchFragment extends Fragment {
             @Override
             public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
                 if(scrollY == v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight()){
-                    page++;
                     if(page>totalPage){
                         progressBar.setVisibility(View.GONE);
                     }else{
@@ -113,6 +112,8 @@ public class SearchFragment extends Fragment {
                             totalPage = productPagination.getTotal_pages();
                             mListProducts.addAll(productPagination.getResults());
                             productAdapter.setmListProduct(mListProducts);
+
+                            SearchFragment.this.page++;
                         }
                     }
 

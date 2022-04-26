@@ -55,7 +55,7 @@ public class ChooseOrderInfoActivity extends AppCompatActivity {
                 Payment payment = (Payment) spinnerPayments.getSelectedItem();
 
                 //validate
-                if(phone.length()<10){
+                if(phone.length()!=10){
                     Toast.makeText(ChooseOrderInfoActivity.this, "Please type in a valid phone number!", Toast.LENGTH_SHORT).show();
                 }
                 else{

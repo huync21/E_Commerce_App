@@ -1,5 +1,6 @@
 package com.hfad.e_commerce_app.views;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -11,6 +12,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -63,7 +65,25 @@ public class CartFragment extends Fragment {
         cartAdapter.setOnItemClickListener(new CartAdapter.ItemClickListener() {
             @Override
             public void onDeleteCartItem(int cartItemId) {
-                CartFragment.this.callAPIDeleteCartItem(cartItemId);
+                AlertDialog alertDialog = new AlertDialog.Builder(getActivity())
+                        .setTitle("Notify")
+                        .setMessage("Are you sure to delete this cart item.")
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int index) {
+                                CartFragment.this.callAPIDeleteCartItem(cartItemId);
+                            }
+                        })
+                        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                dialogInterface.cancel();
+                            }
+                        })
+                        .setIcon(R.drawable.ic_baseline_remove_shopping_cart_red)
+                        .create();
+                alertDialog.show();
+
             }
 
             @Override

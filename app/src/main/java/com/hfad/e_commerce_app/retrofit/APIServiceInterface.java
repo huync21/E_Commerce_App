@@ -44,6 +44,10 @@ public interface APIServiceInterface {
     @GET("products")
     Call<ProductPagination> getListProducts(@Query("page") int page);
 
+
+    @GET("products/by-category")
+    Call<ProductPagination> getListProductsByCategory(@Query("category") String category, @Query("page") int page);
+
     @GET("products/search")
     Call<ProductPagination> searchListProducts(@Query("keyword") String keyword,@Query("page") int page);
 
@@ -82,5 +86,7 @@ public interface APIServiceInterface {
 
     @GET("orders/shipment-methods")
     Call<List<Shipment>> getAllShipmentMethods();
+
+
 
 }
