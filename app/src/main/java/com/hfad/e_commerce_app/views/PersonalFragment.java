@@ -199,6 +199,8 @@ public class PersonalFragment extends Fragment {
                             }
                             edUsername.setText(user.getUserName());
 
+                            tokenManager.saveUserInfo(user.getEmail(),user.getFirstName()
+                            ,user.getLastName(),user.getPhoneNumber(),user.getImage());
                         }
 
                     }

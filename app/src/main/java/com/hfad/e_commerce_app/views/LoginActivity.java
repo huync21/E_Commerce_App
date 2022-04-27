@@ -4,7 +4,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -20,11 +19,7 @@ import com.hfad.e_commerce_app.models.JWTToken;
 import com.hfad.e_commerce_app.token_management.TokenManager;
 import com.hfad.e_commerce_app.utils.APIUtils;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.io.IOException;
-import java.util.Iterator;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -82,7 +77,7 @@ public class LoginActivity extends AppCompatActivity {
                             // Đăng nhập thành công thì lưu token vào share preference thông qua lớp TokenManager mà
                             // mình đã viết
                             JWTToken jwtToken = response.body();
-                            tokenManager.saveUserInfo(jwtToken.getEmail(), jwtToken.getFirstName()
+                            tokenManager.saveTokenAndUserInfo(jwtToken.getEmail(), jwtToken.getFirstName()
                                     , jwtToken.getLastName(), jwtToken.getPhone(), jwtToken.getAccessToken(), jwtToken.getRefreshToken(), jwtToken.getImage());
                             returnToMainActivity();
                         } else {

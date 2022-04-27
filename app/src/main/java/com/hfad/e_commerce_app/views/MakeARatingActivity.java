@@ -16,6 +16,7 @@ import com.google.gson.Gson;
 import com.hfad.e_commerce_app.R;
 import com.hfad.e_commerce_app.models.Product;
 import com.hfad.e_commerce_app.models.Rating;
+import com.hfad.e_commerce_app.models.User;
 import com.hfad.e_commerce_app.token_management.TokenManager;
 import com.hfad.e_commerce_app.utils.APIUtils;
 
@@ -57,12 +58,9 @@ public class MakeARatingActivity extends AppCompatActivity {
             Glide.with(this).load(product.getImage()).into(imageView);
             tvProductName.setText(product.getName());
         }
-        if(tokenManager.getAccessToken()!=null){
-            Glide.with(this).load(tokenManager.getImageUrl()).into(circleImageView);
-            tvUserFullName.setText(tokenManager.getUserFirstName()+" "+tokenManager.getUserLastName());
-        }
-        ratingBar.setRating(starNum);
 
+        ratingBar.setRating(starNum);
+        callAPIGetUserInfo();
 
         btnRate.setOnClickListener(view -> {
             int starNumber = (int) ratingBar.getRating();
@@ -100,6 +98,25 @@ public class MakeARatingActivity extends AppCompatActivity {
 
                     @Override
                     public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+                    }
+                });
+    }
+
+    private void callAPIGetUserInfo(){
+        APIUtils.getApiServiceInterface().getUserInfo("Bearer "+tokenManager.getAccessToken())
+                .enqueue(new Callback<User>() {
+                    @Override
+                    public void onResponse(Call<User> call, Response<User> response) {
+                        if(response.isSuccessful() && response.body()!=null){
+                            User user = response.body();
+                            Glide.with(MakeARatingActivity.this).load(user.getImage()).into(circleImageView);
+                            tvUserFullName.setText(user.getFirstName()+" "+user.getLastName());
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<User> call, Throwable t) {
 
                     }
                 });

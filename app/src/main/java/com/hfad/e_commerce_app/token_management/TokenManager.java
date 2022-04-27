@@ -32,13 +32,22 @@ public class TokenManager {
         editor = sharedPreferences.edit();
     }
 
-    public void saveUserInfo(String email, String firstName, String lastName, String phone, String accessToken, String refreshToken, String image){
+    public void saveTokenAndUserInfo(String email, String firstName, String lastName, String phone, String accessToken, String refreshToken, String image){
         editor.putString(USER_EMAIL,email);
         editor.putString(USER_FIRST_NAME,firstName);
         editor.putString(USER_LAST_NAME,lastName);
         editor.putString(USER_PHONE,phone);
         editor.putString(ACCESS_TOKEN,accessToken);
         editor.putString(REFRESH_TOKEN,refreshToken);
+        editor.putString(IMAGE_URL, image);
+        editor.apply();
+    }
+
+    public void saveUserInfo(String email, String firstName, String lastName, String phone, String image){
+        editor.putString(USER_EMAIL,email);
+        editor.putString(USER_FIRST_NAME,firstName);
+        editor.putString(USER_LAST_NAME,lastName);
+        editor.putString(USER_PHONE,phone);
         editor.putString(IMAGE_URL, image);
         editor.apply();
     }

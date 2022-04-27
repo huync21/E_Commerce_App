@@ -8,14 +8,65 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.hfad.e_commerce_app.R;
+import com.hfad.e_commerce_app.adapters.OrdersAdapter;
+import com.hfad.e_commerce_app.models.Order;
+import com.hfad.e_commerce_app.token_management.TokenManager;
+import com.hfad.e_commerce_app.utils.APIUtils;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class OrdersFragment extends Fragment {
+    private RecyclerView recyclerViewOrders;
+    private OrdersAdapter ordersAdapter;
+
+    private TokenManager tokenManager;
+
+    private List<Order> mListOrder = new ArrayList<>();
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_orders,container,false);
         return view;
     }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        recyclerViewOrders = view.findViewById(R.id.recycler_view_orders);
+        ordersAdapter = new OrdersAdapter(mListOrder);
+        recyclerViewOrders.setAdapter(ordersAdapter);
+        recyclerViewOrders.setLayoutManager(new GridLayoutManager(getActivity(),1));
+
+        tokenManager = new TokenManager(getActivity());
+        callAPIGetAllOrders();
+    }
+
+    private void callAPIGetAllOrders(){
+        APIUtils.getApiServiceInterface().getAllOrders("Bearer "+tokenManager.getAccessToken())
+                .enqueue(new Callback<List<Order>>() {
+                    @Override
+                    public void onResponse(Call<List<Order>> call, Response<List<Order>> response) {
+                        if(response.isSuccessful() && response.body()!=null){
+                            mListOrder.addAll(response.body());
+                            ordersAdapter.setmListOrders(mListOrder);
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<List<Order>> call, Throwable t) {
+
+                    }
+                });
+    }
+
+
 }
