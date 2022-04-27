@@ -13,6 +13,8 @@ import com.hfad.e_commerce_app.models.User;
 
 import java.util.List;
 
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.DELETE;
@@ -20,20 +22,37 @@ import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
+import retrofit2.http.Part;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface APIServiceInterface {
     @FormUrlEncoded
     @POST("accounts/login")
-    Call<JWTToken> login(@Field("email") String email,@Field("password") String password);
+    Call<JWTToken> login(@Field("email") String email, @Field("password") String password);
 
     @FormUrlEncoded
     @POST("accounts/register")
-    Call<User> register(@Field("email") String email, @Field("password") String password, @Field("username") String userName
-    , @Field("first_name") String firstName, @Field("last_name") String lastName);
+    Call<User> register(@Field("email") String email,
+                        @Field("password") String password,
+                        @Field("username") String userName,
+                        @Field("first_name") String firstName,
+                        @Field("last_name") String lastName);
+
+    @GET("accounts/")
+    Call<User> getUserInfo(@Header("Authorization") String authHeader);
+
+    @Multipart
+    @PUT("accounts/")
+    Call<ResponseBody> changeUserInfo(@Header("Authorization") String authHeader,
+                                      @Part("username") RequestBody userName,
+                                      @Part("first_name") RequestBody firstName,
+                                      @Part("last_name") RequestBody lastName,
+                                      @Part("phone_number") RequestBody phone,
+                                      @Part MultipartBody.Part imageFile);
 
     @GET("banners")
     Call<List<Banner>> getListBanners();
@@ -49,7 +68,7 @@ public interface APIServiceInterface {
     Call<ProductPagination> getListProductsByCategory(@Query("category") String category, @Query("page") int page);
 
     @GET("products/search")
-    Call<ProductPagination> searchListProducts(@Query("keyword") String keyword,@Query("page") int page);
+    Call<ProductPagination> searchListProducts(@Query("keyword") String keyword, @Query("page") int page);
 
     @GET("products/{productId}")
     Call<Product> getProductDetail(@Path("productId") int productId);
@@ -62,7 +81,7 @@ public interface APIServiceInterface {
 
     @FormUrlEncoded
     @POST("ratings/")
-    Call<ResponseBody> createRating(@Header("Authorization") String authHeader,@Field("star_num") int starNum, @Field("comment") String comment,@Query("product_id") int productId);
+    Call<ResponseBody> createRating(@Header("Authorization") String authHeader, @Field("star_num") int starNum, @Field("comment") String comment, @Query("product_id") int productId);
 
     @GET("carts")
     Call<List<CartItem>> getAllCartItems(@Header("Authorization") String authHeader);
@@ -75,18 +94,17 @@ public interface APIServiceInterface {
 
     @FormUrlEncoded
     @PUT("carts/{cart_id}/")
-    Call<ResponseBody> updateCartItem(@Header("Authorization") String authHeader,@Field("quantity") int quantity,
+    Call<ResponseBody> updateCartItem(@Header("Authorization") String authHeader, @Field("quantity") int quantity,
                                       @Path("cart_id") int cartId);
 
     @DELETE("carts/{cartId}/")
-    Call<ResponseBody> deleteCartItem(@Header("Authorization") String authHeader,@Path("cartId") int cartId);
+    Call<ResponseBody> deleteCartItem(@Header("Authorization") String authHeader, @Path("cartId") int cartId);
 
     @GET("orders/payment-methods")
     Call<List<Payment>> getAllPaymentMethods();
 
     @GET("orders/shipment-methods")
     Call<List<Shipment>> getAllShipmentMethods();
-
 
 
 }
