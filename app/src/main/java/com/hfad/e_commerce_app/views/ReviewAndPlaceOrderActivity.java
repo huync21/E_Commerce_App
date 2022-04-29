@@ -36,8 +36,9 @@ public class ReviewAndPlaceOrderActivity extends AppCompatActivity {
     private TextView tvShipTo, tvSubtotal, tvShipping, tvTax, tvOrderTotal;
     private ImageView imageViewShipment, imageViewPayment;
     private RecyclerView recyclerView;
-    private ReviewOrderAdapter reviewOrderAdapter;
     private Button btnPlaceOrder;
+    private ReviewOrderAdapter reviewOrderAdapter;
+
 
     private List<CartItem> cartItemList;
     private String address;

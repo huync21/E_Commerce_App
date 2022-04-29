@@ -10,6 +10,7 @@ import android.widget.ProgressBar;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
+import androidx.core.view.ViewCompat;
 import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -61,6 +62,7 @@ public class SearchFragment extends Fragment {
         productAdapter = new ProductAdapter(mListProducts,getActivity());
         recyclerView.setAdapter(productAdapter);
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(),2));
+        ViewCompat.setNestedScrollingEnabled(recyclerView, false);
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override

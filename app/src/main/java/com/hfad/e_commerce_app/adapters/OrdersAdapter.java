@@ -32,7 +32,23 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrderViewH
         Order order = mListOrders.get(position);
         holder.tvOrderTotal.setText("Order total: "+order.getOrderTotal()+"$");
         holder.tvCreatedDate.setText("Created at: "+order.getCreatedAt());
+
+        switch (order.getStatus()){
+            case "Delivering":
+                holder.tvStatus.setTextColor(holder.itemView.getContext().getResources().getColor(R.color.purple_500));
+                break;
+            case "Completed":
+                holder.tvStatus.setTextColor(holder.itemView.getContext().getResources().getColor(R.color.teal_700));
+                break;
+            case "Canceled":
+                holder.tvStatus.setTextColor(holder.itemView.getContext().getResources().getColor(R.color.red));
+
+                break;
+        }
         holder.tvStatus.setText("Status: "+order.getStatus());
+        holder.itemView.setOnClickListener(view -> {
+            itemClickedListener.onItemClickedListener(order);
+        });
     }
 
     @Override
@@ -53,7 +69,7 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrderViewH
     }
 
     public interface ItemClickedListener{
-        void onItemClickedListener(int position);
+        void onItemClickedListener(Order order);
     }
 
     private ItemClickedListener itemClickedListener;

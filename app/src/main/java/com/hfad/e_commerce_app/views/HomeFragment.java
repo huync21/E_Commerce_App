@@ -11,6 +11,7 @@ import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.view.ViewCompat;
 import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -126,7 +127,7 @@ public class HomeFragment extends Fragment {
         productAdapter = new ProductAdapter(mListProducts, getActivity());
         recyclerViewProduct.setAdapter(productAdapter);
         recyclerViewProduct.setLayoutManager(new GridLayoutManager(getActivity(),2));
-
+        ViewCompat.setNestedScrollingEnabled(recyclerViewProduct, false);
         // Tí nữa khi call api thì sửa lại thành tăng số page lên và gọi tiếp api
         nestedScrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
             @Override
@@ -142,20 +143,11 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        if(savedInstanceState==null) {
-            callApiBanner();
-            callApiCategory();
-            callApiProducts(page);
-        } else{
-            mListBanner = (List<Banner>) savedInstanceState.getSerializable("listBanners");
-            mListCategories = (List<Category>) savedInstanceState.getSerializable("listCategories");
-            mListProducts = (List<Product>) savedInstanceState.getSerializable("listProducts");
-            page = savedInstanceState.getInt("page");
-            totalPage = savedInstanceState.getInt("totalPage");
-            bannerAdapter.setmListBanner(mListBanner);
-            categoryAdapter.setmListCategory(mListCategories);
-            productAdapter.setmListProduct(mListProducts);
-        }
+
+        callApiBanner();
+        callApiCategory();
+        callApiProducts(page);
+
 
         // Xu ly su kien khi click vao 1 item category:
         categoryAdapter.setItemClickedListener(new CategoryAdapter.ItemClickedListener() {
@@ -176,17 +168,6 @@ public class HomeFragment extends Fragment {
                 startActivity(intent);
             }
         });
-
-    }
-
-    @Override
-    public void onSaveInstanceState(@NonNull Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putSerializable("listBanners", (Serializable) mListBanner);
-        outState.putSerializable("listCategories",(Serializable) mListCategories);
-        outState.putSerializable("listProducts",(Serializable) mListProducts);
-        outState.putInt("page",page);
-        outState.putInt("totalPage",totalPage);
 
     }
 
@@ -265,6 +246,7 @@ public class HomeFragment extends Fragment {
     public void onResume() {
         super.onResume();
         mHandler.postDelayed(mRunnable,3);
+
     }
 
 

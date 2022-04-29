@@ -1,5 +1,6 @@
 package com.hfad.e_commerce_app.views;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -48,6 +49,15 @@ public class OrdersFragment extends Fragment {
 
         tokenManager = new TokenManager(getActivity());
         callAPIGetAllOrders();
+
+        ordersAdapter.setItemClickedListener(new OrdersAdapter.ItemClickedListener() {
+            @Override
+            public void onItemClickedListener(Order order) {
+                Intent orderDetailIntent = new Intent(getActivity(), OrderDetailActivity.class);
+                orderDetailIntent.putExtra("order", order);
+                startActivity(orderDetailIntent);
+            }
+        });
     }
 
     private void callAPIGetAllOrders(){
@@ -56,7 +66,7 @@ public class OrdersFragment extends Fragment {
                     @Override
                     public void onResponse(Call<List<Order>> call, Response<List<Order>> response) {
                         if(response.isSuccessful() && response.body()!=null){
-                            mListOrder.addAll(response.body());
+                            mListOrder = response.body();
                             ordersAdapter.setmListOrders(mListOrder);
                         }
                     }
