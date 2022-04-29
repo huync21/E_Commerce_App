@@ -16,6 +16,7 @@ import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.hfad.e_commerce_app.R;
@@ -46,6 +47,7 @@ public class HomeFragment extends Fragment {
     private RecyclerView recyclerViewProduct;
     private NestedScrollView nestedScrollView;
     private ProgressBar progressBarBanner, progressBarCategories, progressBarProducts;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     // Adapter
     private BannerAdapter bannerAdapter;
@@ -96,7 +98,7 @@ public class HomeFragment extends Fragment {
         progressBarBanner = view.findViewById(R.id.progress_bar_banner);
         progressBarCategories = view.findViewById(R.id.progress_bar_categories);
         progressBarProducts = view.findViewById(R.id.progress_bar_new_product);
-
+        swipeRefreshLayout = view.findViewById(R.id.swipeLayout);
 
         // Gắn adapter vào viewpager, gắn viewpager vào circle indicator
         bannerAdapter = new BannerAdapter(mListBanner,getActivity());
@@ -169,6 +171,15 @@ public class HomeFragment extends Fragment {
             }
         });
 
+
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                page=1;
+                callApiProducts(page);
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
     }
 
 

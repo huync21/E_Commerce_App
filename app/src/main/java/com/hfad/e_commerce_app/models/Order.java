@@ -18,6 +18,9 @@ public class Order implements Serializable {
     @SerializedName("total_price")
     @Expose
     private int totalPrice;
+    @SerializedName("shipping_price")
+    @Expose
+    private int shippingPrice;
     @SerializedName("order_total")
     @Expose
     private int orderTotal;
@@ -27,6 +30,12 @@ public class Order implements Serializable {
     @SerializedName("created_at")
     @Expose
     private String createdAt;
+    @SerializedName("shipment")
+    @Expose
+    private Shipment shipment;
+    @SerializedName("payment")
+    @Expose
+    private Payment payment;
 
     public int getId() {
         return id;
@@ -84,16 +93,43 @@ public class Order implements Serializable {
         this.createdAt = createdAt;
     }
 
-    public Order(int id, String phone, String shippingAddress, int totalPrice, int orderTotal, String status, String createdAt) {
+    public Order(int id, String phone, String shippingAddress, int totalPrice, int shippingPrice, int orderTotal, String status, String createdAt, Shipment shipment, Payment payment) {
         this.id = id;
         this.phone = phone;
         this.shippingAddress = shippingAddress;
         this.totalPrice = totalPrice;
+        this.shippingPrice = shippingPrice;
         this.orderTotal = orderTotal;
         this.status = status;
         this.createdAt = createdAt;
+        this.shipment = shipment;
+        this.payment = payment;
     }
 
     public Order() {
+    }
+
+    public int getShippingPrice() {
+        return shippingPrice;
+    }
+
+    public void setShippingPrice(int shippingPrice) {
+        this.shippingPrice = shippingPrice;
+    }
+
+    public Shipment getShipment() {
+        return shipment;
+    }
+
+    public void setShipment(Shipment shipment) {
+        this.shipment = shipment;
+    }
+
+    public Payment getPayment() {
+        return payment;
+    }
+
+    public void setPayment(Payment payment) {
+        this.payment = payment;
     }
 }

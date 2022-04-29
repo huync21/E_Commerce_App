@@ -41,12 +41,16 @@
 
     <TextView
         android:id="@+id/tvShipto"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="76dp"
+        android:layout_marginStart="8dp"
+        android:inputType="textMultiLine"
+        android:maxLines="2"
+        android:scrollHorizontally="false"
         android:text="address"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/tv_label_ship_to"
         app:layout_constraintTop_toTopOf="@+id/tv_label_ship_to" />
 
     <TextView

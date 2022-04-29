@@ -1,13 +1,18 @@
 package com.hfad.e_commerce_app.views;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.hfad.e_commerce_app.R;
+import com.hfad.e_commerce_app.adapters.OrderProductAdapter;
+import com.hfad.e_commerce_app.models.Order;
 import com.hfad.e_commerce_app.models.OrderProduct;
 import com.hfad.e_commerce_app.token_management.TokenManager;
 import com.hfad.e_commerce_app.utils.APIUtils;
@@ -24,6 +29,8 @@ public class OrderDetailActivity extends AppCompatActivity {
     private ImageView imageViewShipment, imageViewPayment;
     private RecyclerView recyclerView;
 
+    private OrderProductAdapter orderProductAdapter;
+
     private TokenManager tokenManager;
     private List<OrderProduct> mListOrderProducts = new ArrayList<>();
     @Override
@@ -31,8 +38,25 @@ public class OrderDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_detail);
         initView();
-
         tokenManager = new TokenManager(this);
+
+        Intent intentFromOrderFragment = getIntent();
+        Order order = (Order) intentFromOrderFragment.getSerializableExtra("order");
+
+        tvStatus.setText(order.getStatus());
+        tvShipTo.setText(order.getShippingAddress());
+        tvSubtotal.setText("$"+order.getTotalPrice()+"");
+        tvShipping.setText("$"+order.getShippingPrice());
+        tvOrderTotal.setText("$"+order.getOrderTotal()+"");
+
+        Glide.with(this).load(order.getPayment().getImage()).into(imageViewPayment);
+        Glide.with(this).load(order.getShipment().getImage()).into(imageViewShipment);
+
+        orderProductAdapter = new OrderProductAdapter(mListOrderProducts);
+        recyclerView.setAdapter(orderProductAdapter);
+        recyclerView.setLayoutManager(new GridLayoutManager(this,1));
+
+        callAPIOrderDetails(order.getId());
 
     }
 
@@ -55,8 +79,8 @@ public class OrderDetailActivity extends AppCompatActivity {
                             @Override
                             public void onResponse(Call<List<OrderProduct>> call, Response<List<OrderProduct>> response) {
                                 if(response.isSuccessful() && response.body()!=null){
-                                    mListOrderProducts.addAll(response.body());
-
+                                    mListOrderProducts= response.body();
+                                    orderProductAdapter.setmListOrderProducts(mListOrderProducts);
                                 }
                             }
 
@@ -67,4 +91,6 @@ public class OrderDetailActivity extends AppCompatActivity {
                         }
                 );
     }
+
+
 }

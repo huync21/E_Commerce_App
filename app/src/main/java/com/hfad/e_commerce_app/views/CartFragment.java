@@ -16,6 +16,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.hfad.e_commerce_app.R;
 import com.hfad.e_commerce_app.adapters.CartAdapter;
@@ -40,7 +41,7 @@ public class CartFragment extends Fragment {
     private RecyclerView recyclerView;
     private CartAdapter cartAdapter;
     private Button btnMakeOrder;
-
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     private List<CartItem> mListCartItems = new ArrayList<>();
 
@@ -59,6 +60,8 @@ public class CartFragment extends Fragment {
         // init view
         recyclerView = view.findViewById(R.id.recycler_view_cart_items);
         btnMakeOrder = view.findViewById(R.id.btnMakeOrder);
+        swipeRefreshLayout = view.findViewById(R.id.swipeLayout);
+
         tokenManager = new TokenManager(getActivity());
 
         cartAdapter = new CartAdapter(mListCartItems, getActivity());
@@ -102,6 +105,14 @@ public class CartFragment extends Fragment {
             startActivity(intent);
         });
 
+
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                callAPIGetAllCartItemOfUser();
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
 
 
     }

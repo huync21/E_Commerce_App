@@ -11,6 +11,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.hfad.e_commerce_app.R;
 import com.hfad.e_commerce_app.adapters.OrdersAdapter;
@@ -28,6 +29,7 @@ import retrofit2.Response;
 public class OrdersFragment extends Fragment {
     private RecyclerView recyclerViewOrders;
     private OrdersAdapter ordersAdapter;
+    SwipeRefreshLayout swipeRefreshLayout;
 
     private TokenManager tokenManager;
 
@@ -43,6 +45,7 @@ public class OrdersFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         recyclerViewOrders = view.findViewById(R.id.recycler_view_orders);
+        swipeRefreshLayout = view.findViewById(R.id.swipeLayout);
         ordersAdapter = new OrdersAdapter(mListOrder);
         recyclerViewOrders.setAdapter(ordersAdapter);
         recyclerViewOrders.setLayoutManager(new GridLayoutManager(getActivity(),1));
@@ -56,6 +59,14 @@ public class OrdersFragment extends Fragment {
                 Intent orderDetailIntent = new Intent(getActivity(), OrderDetailActivity.class);
                 orderDetailIntent.putExtra("order", order);
                 startActivity(orderDetailIntent);
+            }
+        });
+
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                callAPIGetAllOrders();
+                swipeRefreshLayout.setRefreshing(false);
             }
         });
     }

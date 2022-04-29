@@ -29,6 +29,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.bumptech.glide.Glide;
 import com.hfad.e_commerce_app.R;
@@ -60,6 +61,7 @@ public class PersonalFragment extends Fragment {
     private Button btnUpdateInfo;
     private Button btnLogOut;
     private ProgressDialog progressDialog;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     private TokenManager tokenManager;
 
@@ -126,6 +128,13 @@ public class PersonalFragment extends Fragment {
                     selectedImageUri);
         });
 
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                callAPIGetUserInfo();
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
     }
 
     private void initView(View view) {
@@ -138,6 +147,7 @@ public class PersonalFragment extends Fragment {
         edPhone = view.findViewById(R.id.edit_text_phone);
         edUsername = view.findViewById(R.id.edUserName);
         btnUpdateInfo = view.findViewById(R.id.btn_update_user_info);
+        swipeRefreshLayout = view.findViewById(R.id.swipeLayout);
     }
 
     private void onClickRequestOpenGalleryPermission() {

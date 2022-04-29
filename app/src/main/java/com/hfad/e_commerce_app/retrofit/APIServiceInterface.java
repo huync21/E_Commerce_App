@@ -105,8 +105,14 @@ public interface APIServiceInterface {
     @GET("orders/payment-methods")
     Call<List<Payment>> getAllPaymentMethods();
 
+//    @GET("orders/payment-method")
+//    Call<Payment> getPayment(@Header("Authorization") String authHeader, @Query("order_id") int orderId);
+
     @GET("orders/shipment-methods")
     Call<List<Shipment>> getAllShipmentMethods();
+
+//    @GET("orders/shipment-method")
+//    Call<Shipment> getShipment(@Header("Authorization") String authHeader, @Query("order_id") int orderId);
 
     @GET("orders/")
     Call<List<Order>> getAllOrders(@Header("Authorization") String authHeader);
