@@ -6,59 +6,73 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+//import com.braintreepayments.api.DropInClient;
+//import com.braintreepayments.api.DropInRequest;
+//import com.braintreepayments.api.DropInResult;
 import com.bumptech.glide.Glide;
 import com.hfad.e_commerce_app.R;
 import com.hfad.e_commerce_app.adapters.ReviewOrderAdapter;
 import com.hfad.e_commerce_app.models.CartItem;
 import com.hfad.e_commerce_app.models.Payment;
 import com.hfad.e_commerce_app.models.Shipment;
-import com.paypal.android.sdk.payments.PayPalConfiguration;
-import com.paypal.android.sdk.payments.PayPalPayment;
-import com.paypal.android.sdk.payments.PayPalService;
-import com.paypal.android.sdk.payments.PaymentActivity;
-import com.paypal.android.sdk.payments.PaymentConfirmation;
+import com.hfad.e_commerce_app.token_management.TokenManager;
+import com.hfad.e_commerce_app.utils.APIUtils;
+import com.stripe.android.PaymentConfiguration;
+import com.stripe.android.paymentsheet.PaymentSheet;
+import com.stripe.android.paymentsheet.PaymentSheetResult;
 
+
+import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
+
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ReviewAndPlaceOrderActivity extends AppCompatActivity {
     private TextView tvShipTo, tvSubtotal, tvShipping, tvTax, tvOrderTotal;
     private ImageView imageViewShipment, imageViewPayment;
     private RecyclerView recyclerView;
     private Button btnPlaceOrder;
+    private ProgressDialog progressDialog;
     private ReviewOrderAdapter reviewOrderAdapter;
 
 
     private List<CartItem> cartItemList;
+    private List<Integer> listCartItemId;
+    private String phone;
     private String address;
     private Shipment shipment;
     private Payment payment;
     private int subtotal;
     private int orderTotal;
 
-    // PAYPAL
-    public static final String clientKey = "AYYSyJA8O_gsNpwUI6DkJcfIxHt-PCbZCwDAkBzau4qwoaM1u19lHK0mqzn8uoh-wOHkFvk7SRmRtpf3";
-    public static final int PAYPAL_REQUEST_CODE = 123;
+    private String SCRET_KEY = "sk_test_51KuTcyHHLREvwghvnhCKONbsTRSbKJdY9JNPDmuFYXLddfDO7mJWiO38EdRld12qFXevxQxeQM59AHAGHIEcdmah005iVdteaT";
+    private String PUBLISH_KEY = "pk_test_51KuTcyHHLREvwghvmro8cCVaTPdOllDwXB8yjOWq7ASnNBH3OlojYye2ANDTNL3Fh8olSCHfqWyZZUkb08CMFUMz00MB0XZW19";
+    PaymentSheet paymentSheet;
 
-    // Paypal Configuration Object
-    private static PayPalConfiguration config = new PayPalConfiguration()
-            // Start with mock environment.  When ready,
-            // switch to sandbox (ENVIRONMENT_SANDBOX)
-            // or live (ENVIRONMENT_PRODUCTION)
-            .environment(PayPalConfiguration.ENVIRONMENT_SANDBOX)
-            // on below line we are passing a client id.
-            .clientId(clientKey);
+    private String customerId;
+    private String ephericalKey;
+    private String clientSecret;
+
+    private TokenManager tokenManager;
 
 
     @Override
@@ -66,97 +80,168 @@ public class ReviewAndPlaceOrderActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_review_and_place_order);
         initView();
+        tokenManager = new TokenManager(this);
 
         // Intent toi tu choose order info activity
         Intent intent = getIntent();
+
+        phone = intent.getStringExtra("phone");
         address = intent.getStringExtra("address");
         shipment = (Shipment) intent.getSerializableExtra("shipment");
         payment = (Payment) intent.getSerializableExtra("payment");
         cartItemList = (List<CartItem>) intent.getSerializableExtra("listCartItem");
+        listCartItemId = new ArrayList<>();
+        for(CartItem cartItem:cartItemList){
+            listCartItemId.add(cartItem.getId());
+        }
 
         tvShipTo.setText(address);
         subtotal = 0;
-        for(CartItem cartItem: cartItemList){
-            subtotal+=cartItem.getProduct().getPrice();
+        for (CartItem cartItem : cartItemList) {
+            subtotal += cartItem.getProduct().getPrice();
         }
 
-        tvSubtotal.setText("$"+subtotal+"");
-        tvShipping.setText("$"+shipment.getPrice());
-        orderTotal = subtotal+shipment.getPrice();
-        tvOrderTotal.setText("$"+orderTotal+"");
+        tvSubtotal.setText("$" + subtotal + "");
+        tvShipping.setText("$" + shipment.getPrice());
+        orderTotal = subtotal + shipment.getPrice();
+        tvOrderTotal.setText("$" + orderTotal + "");
         Glide.with(this).load(payment.getImage()).into(imageViewPayment);
         Glide.with(this).load(shipment.getImage()).into(imageViewShipment);
         reviewOrderAdapter = new ReviewOrderAdapter(cartItemList);
         recyclerView.setAdapter(reviewOrderAdapter);
-        recyclerView.setLayoutManager(new GridLayoutManager(this,1));
+        recyclerView.setLayoutManager(new GridLayoutManager(this, 1));
 
+        PaymentConfiguration.init(this, PUBLISH_KEY);
+        paymentSheet = new PaymentSheet(this, paymentSheetResult -> {
+            onPaymentResult(paymentSheetResult);
+        });
+
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Processing ...");
+        progressDialog.show();
+        APIUtils.getOutsideAPIServiceInterface().createStripeCustomer("Bearer " + SCRET_KEY)
+                .enqueue(new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                        if (response.isSuccessful() && response.body() != null) {
+                            try {
+                                JSONObject jsonObject = new JSONObject(response.body().string());
+                                customerId = jsonObject.getString("id");
+                                Toast.makeText(ReviewAndPlaceOrderActivity.this, "customer id: " + customerId, Toast.LENGTH_SHORT).show();
+                                getEphericalKey(customerId);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+                    }
+                });
 
         btnPlaceOrder.setOnClickListener(view -> {
-            getPayment();
+            paymentFlow();
+        });
+
+
+    }
+
+    private void onPaymentResult(PaymentSheetResult paymentSheetResult) {
+        if (paymentSheetResult instanceof PaymentSheetResult.Completed) {
+            Toast.makeText(this, "Payment Success!", Toast.LENGTH_SHORT).show();
+            callAPISaveTransactionInfo(phone,address,listCartItemId,payment.getId(),shipment.getId(),orderTotal);
+        }
+    }
+
+    private void getEphericalKey(String customerId) {
+        APIUtils.getOutsideAPIServiceInterface().getEphemeralKey("Bearer " + SCRET_KEY, "2020-08-27", customerId)
+                .enqueue(new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                        if (response.isSuccessful() && response.body() != null) {
+                            try {
+                                JSONObject jsonObject = new JSONObject(response.body().string());
+                                ReviewAndPlaceOrderActivity.this.ephericalKey = jsonObject.getString("id");
+                                Toast.makeText(ReviewAndPlaceOrderActivity.this, "epherical key: " + ephericalKey, Toast.LENGTH_SHORT).show();
+                                getClientSecretKey(customerId);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+                    }
+
+                });
+    }
+
+    private void getClientSecretKey(String customerId) {
+        APIUtils.getOutsideAPIServiceInterface().getClientSecret("Bearer " + SCRET_KEY, customerId, orderTotal + "00"
+                , "usd", "true").enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    try {
+                        JSONObject jsonObject = new JSONObject(response.body().string());
+                        clientSecret = jsonObject.getString("client_secret");
+                        Toast.makeText(ReviewAndPlaceOrderActivity.this, "client_secret: " + clientSecret, Toast.LENGTH_SHORT).show();
+                        progressDialog.cancel();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+            }
         });
     }
 
-    private void getPayment() {
-
-        // Creating a paypal payment on below line.
-        PayPalPayment payment = new PayPalPayment(new BigDecimal(orderTotal), "USD", "Product Order",
-                PayPalPayment.PAYMENT_INTENT_SALE);
-
-        // Creating Paypal Payment activity intent
-        Intent intent = new Intent(this, PaymentActivity.class);
-
-        //putting the paypal configuration to the intent
-        intent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION, config);
-
-        // Putting paypal payment to the intent
-        intent.putExtra(PaymentActivity.EXTRA_PAYMENT, payment);
-
-        // Starting the intent activity for result
-        // the request code will be used on the method onActivityResult
-        startActivityForResult(intent, PAYPAL_REQUEST_CODE);
+    private void paymentFlow() {
+        paymentSheet.presentWithPaymentIntent(
+                clientSecret, new PaymentSheet.Configuration("Huy E-commerce",
+                        new PaymentSheet.CustomerConfiguration(
+                                customerId,
+                                ephericalKey
+                        ))
+        );
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+    private void callAPISaveTransactionInfo(String phone, String address, List<Integer> listCartItemId,
+                                            int paymentId, int shipmentId, int orderTotal){
+        APIUtils.getApiServiceInterface().saveTransactionInfo("Bearer "+tokenManager.getAccessToken(),
+                phone,address,listCartItemId,paymentId,shipmentId,orderTotal)
+        .enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if(response.isSuccessful() && response.body()!=null){
 
-        // If the result is from paypal
-        if (requestCode == PAYPAL_REQUEST_CODE) {
-
-            // If the result is OK i.e. user has not canceled the payment
-            if (resultCode == Activity.RESULT_OK) {
-
-                // Getting the payment confirmation
-                PaymentConfirmation confirm = data.getParcelableExtra(PaymentActivity.EXTRA_RESULT_CONFIRMATION);
-
-                // if confirmation is not null
-                if (confirm != null) {
-                    try {
-                        // Getting the payment details
-                        String paymentDetails = confirm.toJSONObject().toString(4);
-                        // on below line we are extracting json response and displaying it in a text view.
-                        JSONObject payObj = new JSONObject(paymentDetails);
-                        String payID = payObj.getJSONObject("response").getString("id");
-                        String state = payObj.getJSONObject("response").getString("state");
-                        Toast.makeText(ReviewAndPlaceOrderActivity.this,"Payment " + state + "\n with payment id is " + payID,Toast.LENGTH_LONG);
-                    } catch (JSONException e) {
-                        // handling json exception on below line
-                        Log.e("Error", "an extremely unlikely failure occurred: ", e);
-                    }
                 }
-            } else if (resultCode == Activity.RESULT_CANCELED) {
-                // on below line we are checking the payment status.
-                Log.i("paymentExample", "The user canceled.");
-            } else if (resultCode == PaymentActivity.RESULT_EXTRAS_INVALID) {
-                // on below line when the invalid paypal config is submitted.
-                Log.i("paymentExample", "An invalid Payment or PayPalConfiguration was submitted. Please see the docs.");
             }
-        }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+            }
+        });
     }
 
     private void initView() {
         recyclerView = findViewById(R.id.recyclerViewCartItems);
-        tvShipTo= findViewById(R.id.tvShipto);
+        tvShipTo = findViewById(R.id.tvShipto);
         tvSubtotal = findViewById(R.id.tvSubtotal);
         tvShipping = findViewById(R.id.tvShipping);
         tvTax = findViewById(R.id.tvTax);

@@ -1,12 +1,13 @@
 plugins {
     id 'com.android.application'
+    id 'org.jetbrains.kotlin.android'
 }
 
 android {
     compileSdk 32
 
     defaultConfig {
-        applicationId "com.hfad.e_commerce_app"
+        applicationId "com.hfad.ecommerceapp"
         minSdk 21
         targetSdk 32
         versionCode 1
@@ -25,7 +26,11 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
 }
+
+
+
 
 dependencies {
 
@@ -44,9 +49,10 @@ dependencies {
     implementation 'de.hdodenhof:circleimageview:3.1.0'
     //Logging Network Calls
     implementation 'com.squareup.okhttp3:logging-interceptor:4.9.1'
+    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
+//    implementation 'com.paypal.checkout:android-sdk:0.6.2'
 
-    //Paypal
-    implementation 'com.paypal.sdk:paypal-android-sdk:2.16.0'
-
-    implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
+    implementation "com.stripe:stripe-java:20.116.0"
+    implementation 'com.stripe:stripe-android:20.2.0'
 }
+

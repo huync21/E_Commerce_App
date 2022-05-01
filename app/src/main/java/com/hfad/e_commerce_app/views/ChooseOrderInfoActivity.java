@@ -63,6 +63,7 @@ public class ChooseOrderInfoActivity extends AppCompatActivity {
                     intent1.putExtra("address", address);
                     intent1.putExtra("shipment",shipment);
                     intent1.putExtra("payment", payment);
+                    intent1.putExtra("phone", phone);
                     intent1.putExtra("listCartItem", (Serializable) cartItemList);
                     startActivity(intent1);
                 }

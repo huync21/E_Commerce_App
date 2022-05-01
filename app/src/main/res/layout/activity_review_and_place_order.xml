@@ -204,10 +204,9 @@
 
         <Button
             android:id="@+id/btnPlaceOrder"
-            android:background="@color/teal_200"
+            android:text="Pay"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:text="Place Order" />
+            android:layout_height="wrap_content" />
     </RelativeLayout>
 
 

@@ -30,7 +30,6 @@ import com.hfad.e_commerce_app.models.ProductPagination;
 import com.hfad.e_commerce_app.retrofit.APIServiceInterface;
 import com.hfad.e_commerce_app.utils.APIUtils;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -176,6 +175,9 @@ public class HomeFragment extends Fragment {
             @Override
             public void onRefresh() {
                 page=1;
+                mListProducts.clear();
+                productAdapter.setmListProduct(mListProducts);
+                progressBarProducts.setVisibility(View.VISIBLE);
                 callApiProducts(page);
                 swipeRefreshLayout.setRefreshing(false);
             }

@@ -7,6 +7,7 @@
     android:layout_margin="10dp"
     app:cardCornerRadius="10dp"
     app:cardElevation="10dp">
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -26,9 +27,9 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_marginTop="4dp"
+            android:text="TextView"
             android:textSize="20sp"
             android:textStyle="bold"
-            android:text="TextView"
             app:layout_constraintStart_toEndOf="@+id/image_view_cart_item"
             app:layout_constraintTop_toTopOf="@+id/image_view_cart_item" />
 
@@ -37,8 +38,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:textSize="16sp"
             android:text="TextView"
+            android:textSize="16sp"
             app:layout_constraintStart_toStartOf="@+id/tv_product_name_cart_item"
             app:layout_constraintTop_toBottomOf="@+id/tv_product_name_cart_item" />
 
@@ -77,11 +78,12 @@
             android:id="@+id/btn_remove_item_from_cart"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="40dp"
-            android:layout_marginBottom="36dp"
+            android:layout_marginEnd="40dp"
             android:background="@drawable/btn_delete_from_cart"
-            app:layout_constraintBottom_toBottomOf="@+id/btn_increase_cart_item_quantity"
-            app:layout_constraintStart_toEndOf="@+id/btn_increase_cart_item_quantity"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="@+id/image_view_cart_item"
+            app:layout_constraintTop_toBottomOf="@+id/tv_product_name_cart_item"
             app:srcCompat="@drawable/ic_baseline_remove_shopping_cart_24" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

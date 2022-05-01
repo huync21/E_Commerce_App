@@ -119,4 +119,14 @@ public interface APIServiceInterface {
 
     @GET("orders/detail/")
     Call<List<OrderProduct>> getOrderDetail(@Header("Authorization") String authHeader, @Query("order_id") int orderId);
+
+    @POST("orders/")
+    @FormUrlEncoded
+    Call<ResponseBody> saveTransactionInfo(@Header("Authorization") String authHeader,
+                                           @Field("phone") String phone,
+                                           @Field("shipping_address") String shippingAddress,
+                                           @Field("list_cart_item_id") List<Integer> listCartItemId,
+                                           @Field("payment_id") int paymentId,
+                                           @Field("shipment_id") int shipmentId,
+                                           @Field("total_price") int totalPrice);
 }

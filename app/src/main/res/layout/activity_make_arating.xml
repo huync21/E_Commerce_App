@@ -14,7 +14,7 @@
         android:layout_marginTop="48dp"
         android:src="@drawable/user_avatar_default"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.087"
+        app:layout_constraintHorizontal_bias="0.096"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_product_name_activity_make_a_rating" />
 
@@ -59,7 +59,7 @@
         android:layout_marginTop="16dp"
         android:stepSize="1"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.163"
+        app:layout_constraintHorizontal_bias="0.177"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/circle_image_view_avatar_activity_make_a_rating" />
 
@@ -71,11 +71,11 @@
         android:layout_marginTop="24dp"
         android:background="@drawable/edit_text_make_rating_shape"
         android:ems="10"
-        android:scrollbars="vertical"
-        android:inputType="textMultiLine"
         android:hint="Type in your comment on this product (This is optional)."
+        android:inputType="textMultiLine"
+        android:scrollbars="vertical"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.144"
+        app:layout_constraintHorizontal_bias="0.592"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ratingBar_activity_make_a_rating" />
 

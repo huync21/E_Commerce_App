@@ -30,7 +30,7 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrderViewH
     @Override
     public void onBindViewHolder(@NonNull OrderViewHolder holder, int position) {
         Order order = mListOrders.get(position);
-        holder.tvOrderTotal.setText("Order total: "+order.getOrderTotal()+"$");
+        holder.tvOrderTotal.setText("Total: "+order.getOrderTotal()+"$");
         holder.tvCreatedDate.setText("Created at: "+order.getCreatedAt());
 
         switch (order.getStatus()){
