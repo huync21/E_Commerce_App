@@ -158,13 +158,12 @@ public class MainActivity extends AppCompatActivity {
         if(intent !=null){
             int addedToCartCode = intent.getIntExtra(DetailProductActivity.ADDED_TO_CART, 0);
             if(addedToCartCode == DetailProductActivity.ADDED_TO_CART_CODE){
-//                viewPager2.setCurrentItem(R.id.menu_item_cart);
                 bottomNavigationView.setSelectedItemId(R.id.menu_item_cart);
             }
-//            else{
-//                //Lúc mới vào thì hiện home fragment
-//                startFragment(new HomeFragment());
-//            }
+            int paymentSuccessCode = intent.getIntExtra(ReviewAndPlaceOrderActivity.PAYMENT_SUCCESS, 0);
+            if(paymentSuccessCode == ReviewAndPlaceOrderActivity.PAYMENT_SUCCESS_CODE){
+                bottomNavigationView.setSelectedItemId(R.id.menu_item_orders);
+            }
         }
     }
 

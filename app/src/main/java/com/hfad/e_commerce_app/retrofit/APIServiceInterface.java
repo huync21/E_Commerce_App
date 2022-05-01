@@ -13,6 +13,9 @@ import com.hfad.e_commerce_app.models.Rating;
 import com.hfad.e_commerce_app.models.Shipment;
 import com.hfad.e_commerce_app.models.User;
 
+import org.json.JSONArray;
+
+import java.util.ArrayList;
 import java.util.List;
 
 import okhttp3.MultipartBody;
@@ -122,11 +125,11 @@ public interface APIServiceInterface {
 
     @POST("orders/")
     @FormUrlEncoded
-    Call<ResponseBody> saveTransactionInfo(@Header("Authorization") String authHeader,
+    Call<ResponseBody> saveTransactionInfo(@Header("Authorization") String Authorization,
                                            @Field("phone") String phone,
-                                           @Field("shipping_address") String shippingAddress,
-                                           @Field("list_cart_item_id") List<Integer> listCartItemId,
-                                           @Field("payment_id") int paymentId,
-                                           @Field("shipment_id") int shipmentId,
-                                           @Field("total_price") int totalPrice);
+                                           @Field("shipping_address") String shipping_address,
+                                           @Field("list_cart_item_ids") JSONArray list_cart_item_ids,
+                                           @Field("payment_id") int payment_id,
+                                           @Field("shipment_id") int shipment_id,
+                                           @Field("total_price") int total_price);
 }

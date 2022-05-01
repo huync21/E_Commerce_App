@@ -1,16 +1,12 @@
 package com.hfad.e_commerce_app.views;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -32,12 +28,11 @@ import com.stripe.android.paymentsheet.PaymentSheet;
 import com.stripe.android.paymentsheet.PaymentSheetResult;
 
 
-import org.jetbrains.annotations.NotNull;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,6 +42,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class ReviewAndPlaceOrderActivity extends AppCompatActivity {
+
     private TextView tvShipTo, tvSubtotal, tvShipping, tvTax, tvOrderTotal;
     private ImageView imageViewShipment, imageViewPayment;
     private RecyclerView recyclerView;
@@ -56,7 +52,7 @@ public class ReviewAndPlaceOrderActivity extends AppCompatActivity {
 
 
     private List<CartItem> cartItemList;
-    private List<Integer> listCartItemId;
+    private ArrayList<String> listCartItemId;
     private String phone;
     private String address;
     private Shipment shipment;
@@ -73,6 +69,9 @@ public class ReviewAndPlaceOrderActivity extends AppCompatActivity {
     private String clientSecret;
 
     private TokenManager tokenManager;
+
+    public static final String PAYMENT_SUCCESS = "PAYMENT SUCCESS";
+    public static final int PAYMENT_SUCCESS_CODE = 99;
 
 
     @Override
@@ -92,7 +91,7 @@ public class ReviewAndPlaceOrderActivity extends AppCompatActivity {
         cartItemList = (List<CartItem>) intent.getSerializableExtra("listCartItem");
         listCartItemId = new ArrayList<>();
         for(CartItem cartItem:cartItemList){
-            listCartItemId.add(cartItem.getId());
+            listCartItemId.add(cartItem.getId()+"");
         }
 
         tvShipTo.setText(address);
@@ -220,15 +219,18 @@ public class ReviewAndPlaceOrderActivity extends AppCompatActivity {
         );
     }
 
-    private void callAPISaveTransactionInfo(String phone, String address, List<Integer> listCartItemId,
+    private void callAPISaveTransactionInfo(String phone, String address, ArrayList<String> listCartItemId,
                                             int paymentId, int shipmentId, int orderTotal){
+        JSONArray jsonArray = new JSONArray(listCartItemId);
         APIUtils.getApiServiceInterface().saveTransactionInfo("Bearer "+tokenManager.getAccessToken(),
-                phone,address,listCartItemId,paymentId,shipmentId,orderTotal)
+                phone,address,jsonArray,paymentId,shipmentId,orderTotal)
         .enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if(response.isSuccessful() && response.body()!=null){
-
+                    Intent showAllOrderIntent = new Intent(ReviewAndPlaceOrderActivity.this, MainActivity.class);
+                    showAllOrderIntent.putExtra(PAYMENT_SUCCESS, PAYMENT_SUCCESS_CODE);
+                    startActivity(showAllOrderIntent);
                 }
             }
 
