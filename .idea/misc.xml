@@ -4,6 +4,7 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/LENOVO/AndroidStudioProjects/E_Commerce_App/app/src/main/res/drawable/background_indicator_3.xml" value="0.2275" />
+        <entry key="..\:/Users/LENOVO/AndroidStudioProjects/E_Commerce_App/app/src/main/res/drawable/background_indicator_3_1.xml" value="0.1195" />
         <entry key="..\:/Users/LENOVO/AndroidStudioProjects/E_Commerce_App/app/src/main/res/drawable/btn_delete_from_cart.xml" value="0.1195" />
         <entry key="..\:/Users/LENOVO/AndroidStudioProjects/E_Commerce_App/app/src/main/res/drawable/button_add_to_cart_shape.xml" value="0.2415" />
         <entry key="..\:/Users/LENOVO/AndroidStudioProjects/E_Commerce_App/app/src/main/res/drawable/button_buy_shape.xml" value="0.2415" />
@@ -20,8 +21,9 @@
         <entry key="..\:/Users/LENOVO/AndroidStudioProjects/E_Commerce_App/app/src/main/res/layout/activity_products_by_category.xml" value="0.1" />
         <entry key="..\:/Users/LENOVO/AndroidStudioProjects/E_Commerce_App/app/src/main/res/layout/activity_register.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/LENOVO/AndroidStudioProjects/E_Commerce_App/app/src/main/res/layout/activity_review_and_place_order.xml" value="0.264" />
+        <entry key="..\:/Users/LENOVO/AndroidStudioProjects/E_Commerce_App/app/src/main/res/layout/background_indicator_3_1.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/LENOVO/AndroidStudioProjects/E_Commerce_App/app/src/main/res/layout/fragment_cart.xml" value="0.1" />
-        <entry key="..\:/Users/LENOVO/AndroidStudioProjects/E_Commerce_App/app/src/main/res/layout/fragment_home.xml" value="0.1" />
+        <entry key="..\:/Users/LENOVO/AndroidStudioProjects/E_Commerce_App/app/src/main/res/layout/fragment_home.xml" value="0.2" />
         <entry key="..\:/Users/LENOVO/AndroidStudioProjects/E_Commerce_App/app/src/main/res/layout/fragment_orders.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/LENOVO/AndroidStudioProjects/E_Commerce_App/app/src/main/res/layout/fragment_personal.xml" value="0.1" />
         <entry key="..\:/Users/LENOVO/AndroidStudioProjects/E_Commerce_App/app/src/main/res/layout/fragment_search.xml" value="0.1" />
@@ -30,6 +32,7 @@
         <entry key="..\:/Users/LENOVO/AndroidStudioProjects/E_Commerce_App/app/src/main/res/layout/item_cart.xml" value="0.264" />
         <entry key="..\:/Users/LENOVO/AndroidStudioProjects/E_Commerce_App/app/src/main/res/layout/item_category.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/LENOVO/AndroidStudioProjects/E_Commerce_App/app/src/main/res/layout/item_home_banner.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/LENOVO/AndroidStudioProjects/E_Commerce_App/app/src/main/res/layout/item_image_product_detail.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/LENOVO/AndroidStudioProjects/E_Commerce_App/app/src/main/res/layout/item_new_product.xml" value="0.264" />
         <entry key="..\:/Users/LENOVO/AndroidStudioProjects/E_Commerce_App/app/src/main/res/layout/item_order.xml" value="0.2" />
         <entry key="..\:/Users/LENOVO/AndroidStudioProjects/E_Commerce_App/app/src/main/res/layout/item_payment_spinner.xml" value="0.23148148148148148" />

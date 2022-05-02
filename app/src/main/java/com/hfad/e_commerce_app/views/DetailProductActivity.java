@@ -4,6 +4,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager2.widget.ViewPager2;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -20,7 +21,9 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 import com.hfad.e_commerce_app.R;
+import com.hfad.e_commerce_app.adapters.ImagesAdapter;
 import com.hfad.e_commerce_app.adapters.RatingAdapter;
+import com.hfad.e_commerce_app.models.Image;
 import com.hfad.e_commerce_app.models.Product;
 import com.hfad.e_commerce_app.models.Rating;
 import com.hfad.e_commerce_app.token_management.TokenManager;
@@ -30,21 +33,25 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
+import me.relex.circleindicator.CircleIndicator3;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class DetailProductActivity extends AppCompatActivity {
-    private ImageView imageView;
+    private ViewPager2 viewPager2;
+    private CircleIndicator3 circleIndicator3;
     private TextView tvName,tvPrice,tvDesc;
     private RatingBar ratingBar1, ratingBar2;
     private TextView tvAverageStar1, tvRatingNumber1, tvAverageStar2, tvRatingNumber2;
     private ProgressBar progressBar5,progressBar4,progressBar3,progressBar2,progressBar1;
     private Button btnBuy,btnAddToCart;
     private RecyclerView recyclerView;
+    private ImagesAdapter imagesAdapter;
     private RatingAdapter ratingAdapter;
     private TextView tvMakeANewRating;
     private RatingBar ratingBarForUserToRate;
@@ -56,6 +63,7 @@ public class DetailProductActivity extends AppCompatActivity {
     private List<Rating> ratingList;
     private TokenManager tokenManager;
     private int productQuantity;
+    private List<Image> listImages =new ArrayList<>();
 
     public static int REQUEST_CODE = 2;
     public static String ADDED_TO_CART = "added to cart";
@@ -69,6 +77,10 @@ public class DetailProductActivity extends AppCompatActivity {
         tokenManager = new TokenManager(this);
         Intent intent = getIntent();
         productId= intent.getIntExtra("productId",0);
+
+        imagesAdapter = new ImagesAdapter(listImages);
+        viewPager2.setAdapter(imagesAdapter);
+        circleIndicator3.setViewPager(viewPager2);
 
         ratingAdapter = new RatingAdapter(ratingList, DetailProductActivity.this);
         recyclerView.setAdapter(ratingAdapter);
@@ -174,7 +186,8 @@ public class DetailProductActivity extends AppCompatActivity {
     }
 
     private void initView() {
-        imageView = findViewById(R.id.image_view_product_detail);
+        viewPager2 = findViewById(R.id.view_pager_2_product_detail);
+        circleIndicator3 = findViewById(R.id.circle_indicator_3_image_product_detail);
         tvName = findViewById(R.id.text_view_product_name);
         tvPrice = findViewById(R.id.text_view_product_price);
         tvDesc = findViewById(R.id.text_view_product_description);
@@ -205,10 +218,8 @@ public class DetailProductActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(Call<Product> call, Response<Product> response) {
                         product = response.body();
-
-
-                        Glide.with(DetailProductActivity.this).load(product.getImage())
-                                .into(imageView);
+                        listImages.add(new Image(product.getImage()));
+                        callGetAllImageOfProductAPI(product.getId());
                         tvName.setText(product.getName());
                         tvPrice.setText("$"+product.getPrice());
                         tvDesc.setText(product.getDescription());
@@ -216,6 +227,27 @@ public class DetailProductActivity extends AppCompatActivity {
 
                     @Override
                     public void onFailure(Call<Product> call, Throwable t) {
+
+                    }
+                });
+    }
+
+    private void callGetAllImageOfProductAPI(int productId){
+        APIUtils.getApiServiceInterface().getImagesOfProduct(productId)
+                .enqueue(new Callback<List<Image>>() {
+                    @Override
+                    public void onResponse(Call<List<Image>> call, Response<List<Image>> response) {
+                        if(response.isSuccessful() && response.body()!=null){
+                            List<Image> result = response.body();
+                            listImages.addAll(result);
+                            imagesAdapter.setmListImage(listImages);
+                            viewPager2.setAdapter(imagesAdapter);
+                            circleIndicator3.setViewPager(viewPager2);
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<List<Image>> call, Throwable t) {
 
                     }
                 });
@@ -314,6 +346,8 @@ public class DetailProductActivity extends AppCompatActivity {
                     }
                 });
     }
+
+
 
 
 }

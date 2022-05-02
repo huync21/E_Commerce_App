@@ -10,20 +10,27 @@
         android:layout_height="match_parent"
         tools:context=".views.DetailProductActivity">
 
-        <FrameLayout
-            android:id="@+id/frame_layout_product_detail"
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/view_pager_2_product_detail"
             android:layout_width="match_parent"
             android:layout_height="400dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"/>
 
-            <ImageView
-                android:id="@+id/image_view_product_detail"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scaleType="fitXY" />
-        </FrameLayout>
+        <me.relex.circleindicator.CircleIndicator3
+            android:id="@+id/circle_indicator_3_image_product_detail"
+            android:layout_width="wrap_content"
+            android:layout_height="70dp"
+            android:layout_margin="5dp"
+            app:ci_drawable="@drawable/background_indicator_3_1"
+            app:layout_constraintBottom_toBottomOf="@id/view_pager_2_product_detail"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintVertical_bias="0.999"
+            app:layout_constraintLeft_toLeftOf="@id/view_pager_2_product_detail"
+            app:layout_constraintRight_toRightOf="@id/view_pager_2_product_detail"
+            app:layout_constraintTop_toTopOf="@+id/view_pager_2_product_detail" />
+
 
         <RatingBar
             android:id="@+id/rating_bar_detail_product"
@@ -37,7 +44,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.093"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/frame_layout_product_detail" />
+            app:layout_constraintTop_toBottomOf="@+id/view_pager_2_product_detail" />
 
         <TextView
             android:id="@+id/tv_average_star"
@@ -48,7 +55,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.103"
             app:layout_constraintStart_toEndOf="@+id/rating_bar_detail_product"
-            app:layout_constraintTop_toBottomOf="@+id/frame_layout_product_detail" />
+            app:layout_constraintTop_toBottomOf="@+id/view_pager_2_product_detail" />
 
         <TextView
             android:id="@+id/tv_rating_number"
@@ -59,7 +66,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.151"
             app:layout_constraintStart_toEndOf="@+id/rating_bar_detail_product"
-            app:layout_constraintTop_toBottomOf="@+id/frame_layout_product_detail" />
+            app:layout_constraintTop_toBottomOf="@+id/view_pager_2_product_detail" />
 
         <TextView
             android:id="@+id/text_view_product_name"

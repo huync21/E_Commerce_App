@@ -3,6 +3,7 @@ package com.hfad.e_commerce_app.retrofit;
 import com.hfad.e_commerce_app.models.Banner;
 import com.hfad.e_commerce_app.models.CartItem;
 import com.hfad.e_commerce_app.models.Category;
+import com.hfad.e_commerce_app.models.Image;
 import com.hfad.e_commerce_app.models.JWTToken;
 import com.hfad.e_commerce_app.models.Order;
 import com.hfad.e_commerce_app.models.OrderProduct;
@@ -79,6 +80,9 @@ public interface APIServiceInterface {
 
     @GET("products/{productId}")
     Call<Product> getProductDetail(@Path("productId") int productId);
+
+    @GET("products/images-of-product/")
+    Call<List<Image>> getImagesOfProduct(@Query("product_id") int productId);
 
     @GET("ratings/average-star/")
     Call<ResponseBody> getAverageStarOfProduct(@Query("product_id") int productId);
