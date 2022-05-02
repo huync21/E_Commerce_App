@@ -6,6 +6,7 @@ import com.hfad.e_commerce_app.models.Category;
 import com.hfad.e_commerce_app.models.JWTToken;
 import com.hfad.e_commerce_app.models.Order;
 import com.hfad.e_commerce_app.models.OrderProduct;
+import com.hfad.e_commerce_app.models.OrderToCreate;
 import com.hfad.e_commerce_app.models.Payment;
 import com.hfad.e_commerce_app.models.Product;
 import com.hfad.e_commerce_app.models.ProductPagination;
@@ -22,6 +23,7 @@ import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
+import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
@@ -124,12 +126,6 @@ public interface APIServiceInterface {
     Call<List<OrderProduct>> getOrderDetail(@Header("Authorization") String authHeader, @Query("order_id") int orderId);
 
     @POST("orders/")
-    @FormUrlEncoded
     Call<ResponseBody> saveTransactionInfo(@Header("Authorization") String Authorization,
-                                           @Field("phone") String phone,
-                                           @Field("shipping_address") String shipping_address,
-                                           @Field("list_cart_item_ids") JSONArray list_cart_item_ids,
-                                           @Field("payment_id") int payment_id,
-                                           @Field("shipment_id") int shipment_id,
-                                           @Field("total_price") int total_price);
+                                           @Body OrderToCreate order);
 }

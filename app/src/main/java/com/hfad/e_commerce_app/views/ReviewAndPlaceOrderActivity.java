@@ -19,6 +19,7 @@ import com.bumptech.glide.Glide;
 import com.hfad.e_commerce_app.R;
 import com.hfad.e_commerce_app.adapters.ReviewOrderAdapter;
 import com.hfad.e_commerce_app.models.CartItem;
+import com.hfad.e_commerce_app.models.OrderToCreate;
 import com.hfad.e_commerce_app.models.Payment;
 import com.hfad.e_commerce_app.models.Shipment;
 import com.hfad.e_commerce_app.token_management.TokenManager;
@@ -52,7 +53,7 @@ public class ReviewAndPlaceOrderActivity extends AppCompatActivity {
 
 
     private List<CartItem> cartItemList;
-    private ArrayList<String> listCartItemId;
+    private ArrayList<Integer> listCartItemId;
     private String phone;
     private String address;
     private Shipment shipment;
@@ -91,7 +92,7 @@ public class ReviewAndPlaceOrderActivity extends AppCompatActivity {
         cartItemList = (List<CartItem>) intent.getSerializableExtra("listCartItem");
         listCartItemId = new ArrayList<>();
         for(CartItem cartItem:cartItemList){
-            listCartItemId.add(cartItem.getId()+"");
+            listCartItemId.add(cartItem.getId());
         }
 
         tvShipTo.setText(address);
@@ -152,7 +153,7 @@ public class ReviewAndPlaceOrderActivity extends AppCompatActivity {
     private void onPaymentResult(PaymentSheetResult paymentSheetResult) {
         if (paymentSheetResult instanceof PaymentSheetResult.Completed) {
             Toast.makeText(this, "Payment Success!", Toast.LENGTH_SHORT).show();
-            callAPISaveTransactionInfo(phone,address,listCartItemId,payment.getId(),shipment.getId(),orderTotal);
+            callAPISaveTransactionInfo(phone,address,listCartItemId,payment.getId(),shipment.getId(),subtotal);
         }
     }
 
@@ -219,11 +220,11 @@ public class ReviewAndPlaceOrderActivity extends AppCompatActivity {
         );
     }
 
-    private void callAPISaveTransactionInfo(String phone, String address, ArrayList<String> listCartItemId,
-                                            int paymentId, int shipmentId, int orderTotal){
-        JSONArray jsonArray = new JSONArray(listCartItemId);
+    private void callAPISaveTransactionInfo(String phone, String address, ArrayList<Integer> listCartItemId,
+                                            int paymentId, int shipmentId, int totalPrice){
+        OrderToCreate order = new OrderToCreate(phone,address,listCartItemId,paymentId,shipmentId,totalPrice);
         APIUtils.getApiServiceInterface().saveTransactionInfo("Bearer "+tokenManager.getAccessToken(),
-                phone,address,jsonArray,paymentId,shipmentId,orderTotal)
+                order)
         .enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
