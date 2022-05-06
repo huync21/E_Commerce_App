@@ -3,6 +3,7 @@ package com.hfad.e_commerce_app.views;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -25,6 +26,7 @@ public class RegisterActivity extends AppCompatActivity {
     private EditText txtEmail, txtUsername, txtFirstName, txtLastName, txtPassword;
     private Button btnRegister;
     private TextView txtBackToLoginPage;
+    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +34,9 @@ public class RegisterActivity extends AppCompatActivity {
         setContentView(R.layout.activity_register);
         initView();
         btnRegister.setOnClickListener(view -> {
+            progressDialog = new ProgressDialog(RegisterActivity.this);
+            progressDialog.setMessage("Please wait ...");
+            progressDialog.show();
             callRegisterApi();
         });
         txtBackToLoginPage.setOnClickListener(view -> {
@@ -46,6 +51,7 @@ public class RegisterActivity extends AppCompatActivity {
                 .enqueue(new Callback<User>() {
                     @Override
                     public void onResponse(Call<User> call, Response<User> response) {
+                        progressDialog.cancel();
                         if(response.isSuccessful() && response.body()!=null){
                             if(response.isSuccessful() && response!=null) {
                                 Intent intent = getIntent();

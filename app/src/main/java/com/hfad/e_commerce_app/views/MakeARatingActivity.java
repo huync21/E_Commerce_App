@@ -2,8 +2,13 @@ package com.hfad.e_commerce_app.views;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Rect;
 import android.os.Bundle;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -43,6 +48,7 @@ public class MakeARatingActivity extends AppCompatActivity {
 
     private TokenManager tokenManager;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,10 +69,16 @@ public class MakeARatingActivity extends AppCompatActivity {
         callAPIGetUserInfo();
 
         btnRate.setOnClickListener(view -> {
+            //hide keyboard
+            InputMethodManager systemService = (InputMethodManager) MakeARatingActivity.this.getSystemService(Context.INPUT_METHOD_SERVICE);
+            systemService.hideSoftInputFromWindow(view.getWindowToken(),0);
+
             int starNumber = (int) ratingBar.getRating();
             String comment = editText.getText().toString();
             callCreateRatingAPI(starNumber,comment, product.getId());
         });
+
+
 
     }
 
@@ -130,5 +142,22 @@ public class MakeARatingActivity extends AppCompatActivity {
         ratingBar = findViewById(R.id.ratingBar_activity_make_a_rating);
         btnRate = findViewById(R.id.btn_make_a_rating_activity_make_a_rating);
         editText = findViewById(R.id.edit_text_make_comment_for_rating);
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        if(ev.getAction() == MotionEvent.ACTION_DOWN){
+            View view = getCurrentFocus();
+            if(view instanceof EditText){
+                Rect rect = new Rect();
+                view.getGlobalVisibleRect(rect);
+                if(!rect.contains((int)ev.getRawX(),(int)ev.getRawX())){
+                    InputMethodManager systemService = (InputMethodManager) MakeARatingActivity.this.getSystemService(Context.INPUT_METHOD_SERVICE);
+                    systemService.hideSoftInputFromWindow(view.getWindowToken(),0);
+                    view.clearFocus();
+                }
+            }
+        }
+        return super.dispatchTouchEvent(ev);
     }
 }

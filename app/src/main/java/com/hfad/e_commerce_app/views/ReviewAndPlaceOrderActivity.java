@@ -98,7 +98,7 @@ public class ReviewAndPlaceOrderActivity extends AppCompatActivity {
         tvShipTo.setText(address);
         subtotal = 0;
         for (CartItem cartItem : cartItemList) {
-            subtotal += cartItem.getProduct().getPrice();
+            subtotal += cartItem.getProduct().getPrice()*cartItem.getQuantity();
         }
 
         tvSubtotal.setText("$" + subtotal + "");

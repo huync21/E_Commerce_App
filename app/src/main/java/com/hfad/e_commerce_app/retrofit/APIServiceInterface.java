@@ -6,6 +6,7 @@ import com.hfad.e_commerce_app.models.Category;
 import com.hfad.e_commerce_app.models.Image;
 import com.hfad.e_commerce_app.models.JWTToken;
 import com.hfad.e_commerce_app.models.Order;
+import com.hfad.e_commerce_app.models.OrderPagination;
 import com.hfad.e_commerce_app.models.OrderProduct;
 import com.hfad.e_commerce_app.models.OrderToCreate;
 import com.hfad.e_commerce_app.models.Payment;
@@ -125,6 +126,9 @@ public interface APIServiceInterface {
 
     @GET("orders/")
     Call<List<Order>> getAllOrders(@Header("Authorization") String authHeader);
+
+    @GET("orders/all/")
+    Call<OrderPagination> getAllOrdersWithPagination(@Header("Authorization") String authHeader, @Query("page") int page);
 
     @GET("orders/detail/")
     Call<List<OrderProduct>> getOrderDetail(@Header("Authorization") String authHeader, @Query("order_id") int orderId);

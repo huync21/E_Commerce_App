@@ -3,6 +3,7 @@ package com.hfad.e_commerce_app.adapters;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -13,42 +14,83 @@ import com.hfad.e_commerce_app.models.Order;
 
 import java.util.List;
 
-public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrderViewHolder> {
+public class OrdersAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private List<Order> mListOrders;
+
+    private static final int TYPE_ITEM = 1;
+    private static final int TYPE_LOADING = 2;
 
     public OrdersAdapter(List<Order> mListOrders) {
         this.mListOrders = mListOrders;
     }
 
-    @NonNull
-    @Override
-    public OrderViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_order,parent,false);
-        return new OrderViewHolder(view);
+    class OrderViewHolder extends RecyclerView.ViewHolder{
+        private TextView tvOrderTotal, tvCreatedDate, tvStatus;
+        public OrderViewHolder(@NonNull View itemView) {
+            super(itemView);
+            tvOrderTotal = itemView.findViewById(R.id.tv_order_total_item_order);
+            tvCreatedDate = itemView.findViewById(R.id.tv_created_at_item_order);
+            tvStatus = itemView.findViewById(R.id.tv_status_item_order);
+        }
+    }
+
+    class LoadingViewHolder extends RecyclerView.ViewHolder{
+        private ProgressBar progressBar;
+
+        public LoadingViewHolder(@NonNull View itemView) {
+            super(itemView);
+            this.progressBar = itemView.findViewById(R.id.my_progress_bar);
+        }
     }
 
     @Override
-    public void onBindViewHolder(@NonNull OrderViewHolder holder, int position) {
-        Order order = mListOrders.get(position);
-        holder.tvOrderTotal.setText("Total: "+order.getOrderTotal()+"$");
-        holder.tvCreatedDate.setText("Created at: "+order.getCreatedAt());
-
-        switch (order.getStatus()){
-            case "Delivering":
-                holder.tvStatus.setTextColor(holder.itemView.getContext().getResources().getColor(R.color.purple_500));
-                break;
-            case "Completed":
-                holder.tvStatus.setTextColor(holder.itemView.getContext().getResources().getColor(R.color.teal_700));
-                break;
-            case "Canceled":
-                holder.tvStatus.setTextColor(holder.itemView.getContext().getResources().getColor(R.color.red));
-
-                break;
+    public int getItemViewType(int position) {
+        if(mListOrders!=null && position == mListOrders.size()-1 &&  mListOrders.get(position).getStatus()==null){
+            return TYPE_LOADING;
         }
-        holder.tvStatus.setText("Status: "+order.getStatus());
-        holder.itemView.setOnClickListener(view -> {
-            itemClickedListener.onItemClickedListener(order);
-        });
+        return TYPE_ITEM;
+    }
+
+    @NonNull
+    @Override
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        if(TYPE_ITEM == viewType){
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_order,parent,false);
+            return new OrderViewHolder(view);
+        }else{
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.my_progress_bar,parent,false);
+            return new LoadingViewHolder(view);
+        }
+
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+        if(holder.getItemViewType() == TYPE_ITEM){
+            Order order = mListOrders.get(position);
+            OrderViewHolder orderViewHolder = (OrderViewHolder) holder;
+            orderViewHolder.tvOrderTotal.setText("Total: "+order.getOrderTotal()+"$");
+            orderViewHolder.tvCreatedDate.setText("Created at: "+order.getCreatedAt());
+
+            if(order.getStatus()!=null) {
+                switch (order.getStatus()) {
+                    case "Delivering":
+                        orderViewHolder.tvStatus.setTextColor(orderViewHolder.itemView.getContext().getResources().getColor(R.color.purple_500));
+                        break;
+                    case "Completed":
+                        orderViewHolder.tvStatus.setTextColor(orderViewHolder.itemView.getContext().getResources().getColor(R.color.teal_700));
+                        break;
+                    case "Canceled":
+                        orderViewHolder.tvStatus.setTextColor(orderViewHolder.itemView.getContext().getResources().getColor(R.color.red));
+
+                        break;
+                }
+            }
+            orderViewHolder.tvStatus.setText("Status: "+order.getStatus());
+            orderViewHolder.itemView.setOnClickListener(view -> {
+                itemClickedListener.onItemClickedListener(order);
+            });
+        }
     }
 
     @Override
@@ -58,15 +100,7 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrderViewH
         return 0;
     }
 
-    public class OrderViewHolder extends RecyclerView.ViewHolder{
-        private TextView tvOrderTotal, tvCreatedDate, tvStatus;
-        public OrderViewHolder(@NonNull View itemView) {
-            super(itemView);
-            tvOrderTotal = itemView.findViewById(R.id.tv_order_total_item_order);
-            tvCreatedDate = itemView.findViewById(R.id.tv_created_at_item_order);
-            tvStatus = itemView.findViewById(R.id.tv_status_item_order);
-        }
-    }
+
 
     public interface ItemClickedListener{
         void onItemClickedListener(Order order);
@@ -81,5 +115,19 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrderViewH
     public void setmListOrders(List<Order> mListOrders) {
         this.mListOrders = mListOrders;
         notifyDataSetChanged();
+    }
+
+    public void addLoadingEffect(){
+        mListOrders.add(new Order());
+        notifyDataSetChanged();
+    }
+
+    public void removeLoadingEffect(){
+        int position = mListOrders.size()-1;
+        Order order = mListOrders.get(position);
+        if(order!=null){
+            mListOrders.remove(position);
+            notifyDataSetChanged();
+        }
     }
 }

@@ -1,5 +1,6 @@
 package com.hfad.e_commerce_app.views;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -26,7 +27,6 @@ import retrofit2.Response;
 public class ProductsByCategoryActivity extends AppCompatActivity {
     private TextView tvCategory;
     private RecyclerView recyclerView;
-    private NestedScrollView nestedScrollView;
 
     private ProductAdapter productAdapter;
 
@@ -49,16 +49,16 @@ public class ProductsByCategoryActivity extends AppCompatActivity {
         tvCategory.setText(category.getName());
         callAPIGetProductByCategory(category.getName(), 1);
 
-        nestedScrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
-            @Override
-            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-                if(scrollY == v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight()){
-                    if(page>totalPage){
 
-                    }
-                    else{
-                        callAPIGetProductByCategory(category.getName(), page);
-                    }
+        recyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                if(!recyclerView.canScrollVertically(1) && newState==RecyclerView.SCROLL_STATE_IDLE){
+                        if(page<=totalPage){
+                            callAPIGetProductByCategory(category.getName(), page);
+                        }
+
                 }
             }
         });
@@ -77,7 +77,6 @@ public class ProductsByCategoryActivity extends AppCompatActivity {
     private void initView() {
         tvCategory = findViewById(R.id.textView_category_product_by_category);
         recyclerView = findViewById(R.id.recycler_view_products_by_category);
-        nestedScrollView = findViewById(R.id.nested_scroll_view_products_category);
     }
 
     private void callAPIGetProductByCategory(String category, int page){
