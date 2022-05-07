@@ -69,7 +69,8 @@ public class SearchFragment extends Fragment {
             public boolean onQueryTextChange(String newText) {
                 keyword = newText;
                 mListProducts.clear();
-                callAPIProducts(1,keyword);
+                page = 1;
+                callAPIProducts(page,keyword);
                 return true;
             }
             @Override

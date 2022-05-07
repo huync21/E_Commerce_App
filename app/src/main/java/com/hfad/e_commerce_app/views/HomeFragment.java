@@ -178,6 +178,8 @@ public class HomeFragment extends Fragment {
                 mListProducts.clear();
                 productAdapter.setmListProduct(mListProducts);
                 progressBarProducts.setVisibility(View.VISIBLE);
+                callApiBanner();
+                callApiCategory();
                 callApiProducts(page);
                 swipeRefreshLayout.setRefreshing(false);
             }
