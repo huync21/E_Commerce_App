@@ -37,6 +37,7 @@ public class OrdersFragment extends Fragment {
     private TokenManager tokenManager;
     private int page=1;
     private int totalPage;
+    private boolean isLoading;
 
     private List<Order> mListOrder = new ArrayList<>();
     @Nullable
@@ -93,14 +94,18 @@ public class OrdersFragment extends Fragment {
 
 
     private void callAPIGetOrderWithPagination(int page){
-//        if(page<totalPage)
-//            ordersAdapter.addLoadingEffect();
+        if(page<=totalPage && !isLoading){
+            ordersAdapter.addLoadingEffect();
+            isLoading = true;
+        }
         APIUtils.getApiServiceInterface().getAllOrdersWithPagination("Bearer "+tokenManager.getAccessToken(), page)
                 .enqueue(new Callback<OrderPagination>() {
                     @Override
                     public void onResponse(Call<OrderPagination> call, Response<OrderPagination> response) {
-//                        if(page<totalPage)
-//                            ordersAdapter.removeLoadingEffect();
+                        if(isLoading){
+                            ordersAdapter.removeLoadingEffect();
+                            isLoading=false;
+                        }
                         if(response.isSuccessful() && response.body()!=null){
                             OrderPagination orderPagination = response.body();
                             List<Order> listOrder = orderPagination.getResults();

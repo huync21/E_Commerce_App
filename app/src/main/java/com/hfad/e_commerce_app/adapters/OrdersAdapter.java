@@ -45,16 +45,13 @@ public class OrdersAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     @Override
     public int getItemViewType(int position) {
-        if(mListOrders!=null && position == mListOrders.size()-1 &&  mListOrders.get(position).getStatus()==null){
-            return TYPE_LOADING;
-        }
-        return TYPE_ITEM;
+        return mListOrders.get(position) == null ? TYPE_LOADING : TYPE_ITEM;
     }
 
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        if(TYPE_ITEM == viewType){
+        if(viewType == TYPE_ITEM){
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_order,parent,false);
             return new OrderViewHolder(view);
         }else{
@@ -72,8 +69,7 @@ public class OrdersAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             orderViewHolder.tvOrderTotal.setText("Total: "+order.getOrderTotal()+"$");
             orderViewHolder.tvCreatedDate.setText("Created at: "+order.getCreatedAt());
 
-            if(order.getStatus()!=null) {
-                switch (order.getStatus()) {
+            switch (order.getStatus()) {
                     case "Delivering":
                         orderViewHolder.tvStatus.setTextColor(orderViewHolder.itemView.getContext().getResources().getColor(R.color.purple_500));
                         break;
@@ -84,7 +80,6 @@ public class OrdersAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                         orderViewHolder.tvStatus.setTextColor(orderViewHolder.itemView.getContext().getResources().getColor(R.color.red));
 
                         break;
-                }
             }
             orderViewHolder.tvStatus.setText("Status: "+order.getStatus());
             orderViewHolder.itemView.setOnClickListener(view -> {
@@ -118,14 +113,14 @@ public class OrdersAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     }
 
     public void addLoadingEffect(){
-        mListOrders.add(new Order());
-        notifyDataSetChanged();
+        mListOrders.add(null);
+        notifyItemInserted(mListOrders.size()-1);
     }
 
     public void removeLoadingEffect(){
         int position = mListOrders.size()-1;
         Order order = mListOrders.get(position);
-        if(order!=null){
+        if(order==null){
             mListOrders.remove(position);
             notifyDataSetChanged();
         }
