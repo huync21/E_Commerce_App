@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -33,7 +34,8 @@ import retrofit2.Response;
 public class OrdersFragment extends Fragment {
     private RecyclerView recyclerViewOrders;
     private OrdersAdapter ordersAdapter;
-    SwipeRefreshLayout swipeRefreshLayout;
+    private SwipeRefreshLayout swipeRefreshLayout;
+    private Button btnStatistic;
     private TokenManager tokenManager;
     private int page=1;
     private int totalPage;
@@ -52,10 +54,12 @@ public class OrdersFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         recyclerViewOrders = view.findViewById(R.id.recycler_view_orders);
         swipeRefreshLayout = view.findViewById(R.id.swipeLayout);
+        btnStatistic = view.findViewById(R.id.btnStatistic);
         ordersAdapter = new OrdersAdapter(mListOrder);
         recyclerViewOrders.setAdapter(ordersAdapter);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         recyclerViewOrders.setLayoutManager(linearLayoutManager);
+
         recyclerViewOrders.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
@@ -71,6 +75,7 @@ public class OrdersFragment extends Fragment {
         tokenManager = new TokenManager(getActivity());
 
         callAPIGetOrderWithPagination(page);
+
         ordersAdapter.setItemClickedListener(new OrdersAdapter.ItemClickedListener() {
             @Override
             public void onItemClickedListener(Order order) {
@@ -83,11 +88,21 @@ public class OrdersFragment extends Fragment {
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                if(isLoading)
+                    ordersAdapter.removeLoadingEffect();
                 page = 1;
                 mListOrder= new ArrayList<>();
                 ordersAdapter.setmListOrders(mListOrder);
                 callAPIGetOrderWithPagination(page);
                 swipeRefreshLayout.setRefreshing(false);
+            }
+        });
+
+        btnStatistic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intentGoToStatisticActivity = new Intent(getActivity(),StatisticActivity.class);
+                startActivity(intentGoToStatisticActivity);
             }
         });
     }

@@ -17,6 +17,9 @@
         android:usesCleartextTraffic="true"
         tools:replace="android:theme">
         <activity
+            android:name=".views.StatisticActivity"
+            android:exported="false" />
+        <activity
             android:name=".views.OrderDetailActivity"
             android:exported="true" />
         <activity

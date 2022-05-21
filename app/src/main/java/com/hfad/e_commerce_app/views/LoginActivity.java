@@ -78,7 +78,8 @@ public class LoginActivity extends AppCompatActivity {
                             // mình đã viết
                             JWTToken jwtToken = response.body();
                             tokenManager.saveTokenAndUserInfo(jwtToken.getEmail(), jwtToken.getFirstName()
-                                    , jwtToken.getLastName(), jwtToken.getPhone(), jwtToken.getAccessToken(), jwtToken.getRefreshToken(), jwtToken.getImage());
+                                    , jwtToken.getLastName(), jwtToken.getPhone(), jwtToken.getAccessToken(),
+                                    jwtToken.getRefreshToken(), jwtToken.getImage());
                             returnToMainActivity();
                         } else {
                             // Nếu đăng nhập thất bại thì hiển thị ra khung message lỗi

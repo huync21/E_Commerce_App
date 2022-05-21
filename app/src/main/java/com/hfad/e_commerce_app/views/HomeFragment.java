@@ -236,6 +236,7 @@ public class HomeFragment extends Fragment {
                             progressBarProducts.setVisibility(View.GONE);
                             ProductPagination productPagination = response.body();
                             totalPage = productPagination.getTotal_pages();
+
                             mListProducts.addAll(productPagination.getResults());
                             productAdapter.setmListProduct(mListProducts);
 
