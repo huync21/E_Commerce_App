@@ -15,6 +15,7 @@ import com.hfad.e_commerce_app.models.ProductPagination;
 import com.hfad.e_commerce_app.models.Rating;
 import com.hfad.e_commerce_app.models.Shipment;
 import com.hfad.e_commerce_app.models.User;
+import com.hfad.e_commerce_app.models.UserExpenseByCategoryStats;
 import com.hfad.e_commerce_app.models.UserExpenseStatistic;
 
 import org.json.JSONArray;
@@ -140,6 +141,12 @@ public interface APIServiceInterface {
 
     @GET("statistics/user-expense")
     Call<List<UserExpenseStatistic>> getMonthlyExpenseStatisticsOfUser(
+            @Header("Authorization") String authorization,
+            @Query("year") int year
+    );
+
+    @GET("statistics/user-expense-by-category")
+    Call<List<UserExpenseByCategoryStats>> getExpenseStatisticsByCategoryOfUser(
             @Header("Authorization") String authorization,
             @Query("year") int year
     );

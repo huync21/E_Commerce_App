@@ -11,15 +11,20 @@ import android.widget.TextView;
 import android.widget.ArrayAdapter;
 
 import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.hfad.e_commerce_app.R;
+import com.hfad.e_commerce_app.models.UserExpenseByCategoryStats;
 import com.hfad.e_commerce_app.models.UserExpenseStatistic;
 import com.hfad.e_commerce_app.token_management.TokenManager;
 import com.hfad.e_commerce_app.utils.APIUtils;
@@ -35,10 +40,12 @@ import retrofit2.Response;
 
 public class StatisticActivity extends AppCompatActivity {
     private BarChart barChart;
+    private PieChart pieChart;
     private TextView textViewMonthlyExpenseStat;
     private SwipeRefreshLayout swipeRefreshLayout;
     private Spinner spinner;
     private TokenManager tokenManager;
+    private int year;
 
 
     @Override
@@ -46,26 +53,30 @@ public class StatisticActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_statistic);
         barChart = findViewById(R.id.barChart);
+        pieChart = findViewById(R.id.pieChart);
         textViewMonthlyExpenseStat = findViewById(R.id.textViewMonthlyStatistic);
         swipeRefreshLayout = findViewById(R.id.swipeLayout);
         spinner = findViewById(R.id.spinnerYear);
-        int year = Calendar.getInstance().get(Calendar.YEAR);
+        year = Calendar.getInstance().get(Calendar.YEAR);
         // Gia su 2019 la nam he thong start up
         List<Integer> years = new ArrayList<>();
-        for(int i=year;i>=2019;i--){
+        for (int i = year; i >= 2019; i--) {
             years.add(i);
         }
-        spinner.setAdapter(new ArrayAdapter(this,R.layout.item_text_spinner,years));
+        spinner.setAdapter(new ArrayAdapter(this, R.layout.item_text_spinner, years));
         tokenManager = new TokenManager(this);
 
         // Luc moi vao man hinh goi api hien ra thong ke
         callAPIGetMonthlyStats(year);
+        callAPIGetStatisticByCategory(year);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 String selectedItem = spinner.getSelectedItem().toString();
                 int selectedYear = Integer.parseInt(selectedItem);
+                year = selectedYear;
                 callAPIGetMonthlyStats(selectedYear);
+                callAPIGetStatisticByCategory(selectedYear);
             }
 
             @Override
@@ -80,14 +91,17 @@ public class StatisticActivity extends AppCompatActivity {
                 swipeRefreshLayout.setRefreshing(false);
             }
         });
+
+
     }
 
-    private void callAPIGetMonthlyStats(int year){
-        APIUtils.getApiServiceInterface().getMonthlyExpenseStatisticsOfUser("Bearer "+tokenManager.getAccessToken(),
+
+    private void callAPIGetMonthlyStats(int year) {
+        APIUtils.getApiServiceInterface().getMonthlyExpenseStatisticsOfUser("Bearer " + tokenManager.getAccessToken(),
                 year).enqueue(new Callback<List<UserExpenseStatistic>>() {
             @Override
             public void onResponse(Call<List<UserExpenseStatistic>> call, Response<List<UserExpenseStatistic>> response) {
-                if(response.isSuccessful() && response.body()!=null){
+                if (response.isSuccessful() && response.body() != null) {
                     List<UserExpenseStatistic> statisticList = response.body();
 
                     updateBarChartUI(statisticList, year);
@@ -101,8 +115,27 @@ public class StatisticActivity extends AppCompatActivity {
         });
     }
 
+    private void callAPIGetStatisticByCategory(int year){
+        APIUtils.getApiServiceInterface().getExpenseStatisticsByCategoryOfUser("Bearer "+tokenManager.getAccessToken(),
+                year).enqueue(new Callback<List<UserExpenseByCategoryStats>>() {
+            @Override
+            public void onResponse(Call<List<UserExpenseByCategoryStats>> call, Response<List<UserExpenseByCategoryStats>> response) {
+                if(response.isSuccessful() && response.body()!=null){
+                    List<UserExpenseByCategoryStats> list = response.body();
+
+                    updatePieChartUI(list,year);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<UserExpenseByCategoryStats>> call, Throwable t) {
+
+            }
+        });
+    }
+
     private void updateBarChartUI(List<UserExpenseStatistic> expenseStatisticList, int year) {
-        textViewMonthlyExpenseStat.setText("User's Monthly Expense "+year);
+        textViewMonthlyExpenseStat.setText("User's Monthly Expense " + year);
         List<BarEntry> barEntries = new ArrayList<>();
 
         for (int i = 0; i < 12; i++) {
@@ -141,7 +174,7 @@ public class StatisticActivity extends AppCompatActivity {
             @Override
             public String getFormattedValue(float value) {
 
-                return value+" $";
+                return value + " $";
             }
         });
 
@@ -153,5 +186,24 @@ public class StatisticActivity extends AppCompatActivity {
                 return "";
             }
         });
+        barChart.invalidate();
+    }
+
+    private void updatePieChartUI(List<UserExpenseByCategoryStats> expenseByCategoryStatsList,int year) {
+        ArrayList<PieEntry> pieEntries = new ArrayList<>();
+        int i=0;
+        for (UserExpenseByCategoryStats userExpenseByCategoryStats : expenseByCategoryStatsList) {
+            PieEntry pieEntry = new PieEntry(userExpenseByCategoryStats.getTotal(), userExpenseByCategoryStats.getCategory());
+            pieEntries.add(pieEntry);
+            i++;
+        }
+
+        PieDataSet pieDataSet = new PieDataSet(pieEntries, "     (Unit: $)");
+        pieDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
+        pieChart.getDescription().setText("By Category Year "+year);
+        pieChart.getDescription().setTextColor(R.color.white);
+        pieChart.getDescription().setTextSize(16);
+        pieChart.setData(new PieData(pieDataSet));
+        pieChart.invalidate();
     }
 }
