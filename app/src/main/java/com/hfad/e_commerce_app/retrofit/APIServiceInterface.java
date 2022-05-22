@@ -138,6 +138,9 @@ public interface APIServiceInterface {
     @POST("orders/")
     Call<ResponseBody> saveTransactionInfo(@Header("Authorization") String Authorization,
                                            @Body OrderToCreate order);
+    @GET("orders/by-month-and-year")
+    Call<List<Order>> getAllOrdersByMonthAndYear(@Header("Authorization") String authHeader, @Query("year") int year,
+                                                 @Query("month") int month);
 
     @GET("statistics/user-expense")
     Call<List<UserExpenseStatistic>> getMonthlyExpenseStatisticsOfUser(
@@ -148,6 +151,6 @@ public interface APIServiceInterface {
     @GET("statistics/user-expense-by-category")
     Call<List<UserExpenseByCategoryStats>> getExpenseStatisticsByCategoryOfUser(
             @Header("Authorization") String authorization,
-            @Query("year") int year
+            @Query("year") int year, @Query("month") int month
     );
 }

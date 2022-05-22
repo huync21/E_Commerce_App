@@ -27,9 +27,9 @@ public class Order implements Serializable {
     @SerializedName("status")
     @Expose
     private String status;
-    @SerializedName("created_at")
+    @SerializedName("modified_at")
     @Expose
-    private String createdAt;
+    private String modified_at;
     @SerializedName("shipment")
     @Expose
     private Shipment shipment;
@@ -85,12 +85,12 @@ public class Order implements Serializable {
         this.status = status;
     }
 
-    public String getCreatedAt() {
-        return createdAt;
+    public String getModified_at() {
+        return modified_at;
     }
 
-    public void setCreatedAt(String createdAt) {
-        this.createdAt = createdAt;
+    public void setModified_at(String modified_at) {
+        this.modified_at = modified_at;
     }
 
     public Order(int id, String phone, String shippingAddress, int totalPrice, int shippingPrice, int orderTotal, String status, String createdAt, Shipment shipment, Payment payment) {
@@ -101,7 +101,7 @@ public class Order implements Serializable {
         this.shippingPrice = shippingPrice;
         this.orderTotal = orderTotal;
         this.status = status;
-        this.createdAt = createdAt;
+        this.modified_at = createdAt;
         this.shipment = shipment;
         this.payment = payment;
     }

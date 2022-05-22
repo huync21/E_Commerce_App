@@ -67,7 +67,7 @@ public class OrdersAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             Order order = mListOrders.get(position);
             OrderViewHolder orderViewHolder = (OrderViewHolder) holder;
             orderViewHolder.tvOrderTotal.setText("Total: "+order.getOrderTotal()+"$");
-            orderViewHolder.tvCreatedDate.setText("Created at: "+order.getCreatedAt());
+            orderViewHolder.tvCreatedDate.setText("Created at: "+order.getModified_at());
 
             switch (order.getStatus()) {
                     case "Delivering":
