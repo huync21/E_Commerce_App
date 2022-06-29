@@ -34,6 +34,8 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         return new ProductViewHolder(view);
     }
 
+    // Lặp qua cái list mListProduct từ vị trí 0 onBindViewHolder(holder,0)
+    // onBindViewHolder(holder,1)
     @Override
     public void onBindViewHolder(@NonNull ProductViewHolder holder, int position) {
         Product product = mListProduct.get(position);
@@ -43,9 +45,11 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
             holder.textViewName.setText(product.getName());
             holder.textViewPrice.setText("$"+product.getPrice());
         }
+
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 itemClickListener.onItemClick(product.getId());
             }
         });

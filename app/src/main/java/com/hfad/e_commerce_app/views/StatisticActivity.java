@@ -276,11 +276,10 @@ public class StatisticActivity extends AppCompatActivity {
     private void updatePieChartUI(List<UserExpenseByCategoryStats> expenseByCategoryStatsList,int year) {
         ArrayList<PieEntry> pieEntries = new ArrayList<>();
         int i=0;
-        int total = 0;
+        int total = expenseByCategoryStatsList.get(0).getTotalOfUser();
         for (UserExpenseByCategoryStats userExpenseByCategoryStats : expenseByCategoryStatsList) {
             PieEntry pieEntry = new PieEntry(userExpenseByCategoryStats.getTotal(), userExpenseByCategoryStats.getCategory());
             pieEntries.add(pieEntry);
-            total+=userExpenseByCategoryStats.getTotal();
             i++;
         }
 

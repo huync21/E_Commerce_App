@@ -6,6 +6,9 @@ import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
 
 public class UserExpenseByCategoryStats implements Serializable {
+    @SerializedName("total_of_user")
+    @Expose
+    private int totalOfUser;
     @SerializedName("category")
     @Expose
     private String category;
@@ -35,5 +38,13 @@ public class UserExpenseByCategoryStats implements Serializable {
     }
 
     public UserExpenseByCategoryStats() {
+    }
+
+    public int getTotalOfUser() {
+        return totalOfUser;
+    }
+
+    public void setTotalOfUser(int totalOfUser) {
+        this.totalOfUser = totalOfUser;
     }
 }
